@@ -125,21 +125,34 @@ class PacsMapGenerator:
         if row.get('Pregnant?', '').lower() == 'yes':
             pregnant_info = "<b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>"
         
+        # Language info
+        language_info = ""
+        if pd.notna(row.get('Language', '')) and row['Language'] not in ['', 'English']:
+            language_info = f"<b>🌐 Language:</b> {row['Language']}<br>"
+        
+        # Pop-up info (action needed)
+        action_info = ""
+        if pd.notna(row.get('Pop-Up Info', '')) and row['Pop-Up Info'] != '':
+            action_color = 'red' if 'spay' in row['Pop-Up Info'].lower() else 'blue'
+            action_info = f"<span style='background-color:{action_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>{row['Pop-Up Info']}</span>"
+        
         # Handle photos
         photo_html = ""
         if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
             photo_html = f"<br><img src='{row['Photo']}' style='max-width:200px;max-height:150px;'><br>"
         
         # Status badge
-        status_color = 'green' if row['Status'] == 'Completed' else 'orange'
-        status_html = f"<span style='background-color:{status_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>{row['Status']}</span>"
+        status = row.get('Status', 'Pending')
+        status_color = 'green' if status == 'Completed' else 'orange'
+        status_html = f"<span style='background-color:{status_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>{status}</span>"
         
         popup_html = f"""
         <div style='font-family: Arial, sans-serif; max-width: 300px;'>
             {pregnant_info}
             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>{row['Location (Area)']}</h4>
-            {status_html}<br><br>
+            {action_info}{status_html}<br><br>
             
+            {language_info}
             <b>🐾 Animal:</b> {row['Dog/Cat']}<br>
             <b>📊 Count:</b> {row['No. of Animals']}<br>
             <b>⚧ Sex:</b> {row['Sex']}<br>
