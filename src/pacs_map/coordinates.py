@@ -4,17 +4,25 @@ Coordinate extraction utilities for Google Maps links
 
 import re
 import pandas as pd
+import requests
 from typing import Tuple, Optional
 
 
 class CoordinateExtractor:
     """Extract coordinates from various Google Maps URL formats"""
     
-    @staticmethod
-    def extract_from_url(url: str) -> Tuple[Optional[float], Optional[float]]:
+    def extract_from_url(self, url: str) -> Tuple[Optional[float], Optional[float]]:
         """Extract latitude and longitude from Google Maps URLs"""
         if pd.isna(url) or not url:
             return None, None
+        
+        # If it's a shortened URL, resolve it first
+        if 'maps.app.goo.gl' in url or 'goo.gl' in url:
+            try:
+                response = requests.head(url, allow_redirects=True, timeout=10)
+                url = response.url
+            except:
+                pass  # Continue with original URL if resolving fails
         
         # Pattern 1: @lat,lng format (most common)
         match = re.search(r'@(-?\d+\.?\d*),(-?\d+\.?\d*)', url)

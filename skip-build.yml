@@ -1,0 +1,17 @@
+name: Skip Build
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for skipping build'
+        required: false
+        default: 'Manual skip'
+
+jobs:
+  skip:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Skip build
+      run: |
+        echo "🚫 Build skipped: ${{ github.event.inputs.reason }}"
+        echo "Use this workflow to prevent unnecessary builds during testing"

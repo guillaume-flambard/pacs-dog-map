@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_c53a65175703684bd34d3a9fbcbaa8d3 {
+                #map_954e4e1ccf4bfda233a98a2ce4a169e0 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -80,7 +80,7 @@
         <p><b>Total Animals:</b> 7</p>
         <p><b>Pending:</b> 7</p>
         <p><b>Completed:</b> 0</p>
-        <p><b>Pregnant (Priority):</b> 1</p>
+        <p><b>Pregnant (Priority):</b> 5</p>
         <hr>
         <p style="font-size:12px; color:#666;">
         Last updated: <span id="current-date"></span>
@@ -92,14 +92,14 @@
         </script>
         
     
-            <div class="folium-map" id="map_c53a65175703684bd34d3a9fbcbaa8d3" ></div>
+            <div class="folium-map" id="map_954e4e1ccf4bfda233a98a2ce4a169e0" ></div>
         
 </body>
 <script>
     
     
-            var map_c53a65175703684bd34d3a9fbcbaa8d3 = L.map(
-                "map_c53a65175703684bd34d3a9fbcbaa8d3",
+            var map_954e4e1ccf4bfda233a98a2ce4a169e0 = L.map(
+                "map_954e4e1ccf4bfda233a98a2ce4a169e0",
                 {
                     center: [9.731, 99.99],
                     crs: L.CRS.EPSG3857,
@@ -116,7 +116,7 @@
 
         
     
-            var tile_layer_07b272d920e594d351abda0d9ab8a1de = L.tileLayer(
+            var tile_layer_a1b0079e2e827dd1f71a0977ac3bd99c = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -133,10 +133,10 @@
             );
         
     
-            tile_layer_07b272d920e594d351abda0d9ab8a1de.addTo(map_c53a65175703684bd34d3a9fbcbaa8d3);
+            tile_layer_a1b0079e2e827dd1f71a0977ac3bd99c.addTo(map_954e4e1ccf4bfda233a98a2ce4a169e0);
         
     
-            var tile_layer_6e329696e750d6fe2c94bcafe35df026 = L.tileLayer(
+            var tile_layer_6924c4e476b65f1ade29550d7fd50e64 = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 0,
@@ -153,23 +153,23 @@
             );
         
     
-            tile_layer_6e329696e750d6fe2c94bcafe35df026.addTo(map_c53a65175703684bd34d3a9fbcbaa8d3);
+            tile_layer_6924c4e476b65f1ade29550d7fd50e64.addTo(map_954e4e1ccf4bfda233a98a2ce4a169e0);
         
     
-            var marker_cluster_004955d832dde49873410c1516343fb4 = L.markerClusterGroup(
+            var marker_cluster_c86ed6d47ab039aca8265fbc9d174de6 = L.markerClusterGroup(
                 {
 }
             );
         
     
-            var marker_de645a71f115dde94dfd3f60e5839d18 = L.marker(
+            var marker_302d9669c3c28e943fc551f5ff2ef8c3 = L.marker(
                 [9.7282, 99.9915251],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_0d555d6df17f99c429d2ff978c3f33dd = L.AwesomeMarkers.icon(
+            var icon_5cf47aecf66e2a7608300228354ff532 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "red",
   "iconColor": "white",
@@ -180,34 +180,34 @@
             );
         
     
-        var popup_50a2eef6247b8e64a8fcc9f4df13ae33 = L.popup({
+        var popup_8656e6663cac2e50313f7cf12fde0250 = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_e8092a0bee8c219c572fa3df01bdeb53 = $(`<div id="html_e8092a0bee8c219c572fa3df01bdeb53" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Both<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/4evG154Z9U5miZ9S6" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> on right BEFORE dump             </div>         </div>         </div>`)[0];
-                popup_50a2eef6247b8e64a8fcc9f4df13ae33.setContent(html_e8092a0bee8c219c572fa3df01bdeb53);
+                var html_a302850ba7afdac5b69b8b4dbdeba897 = $(`<div id="html_a302850ba7afdac5b69b8b4dbdeba897" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 2<br>             <b>⚧ Sex:</b> Both<br>             <b>🎂 Age:</b> Puppy (>6mnth)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/4evG154Z9U5miZ9S6" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> on right BEFORE dump             </div>         </div>         </div>`)[0];
+                popup_8656e6663cac2e50313f7cf12fde0250.setContent(html_a302850ba7afdac5b69b8b4dbdeba897);
             
         
 
-        marker_de645a71f115dde94dfd3f60e5839d18.bindPopup(popup_50a2eef6247b8e64a8fcc9f4df13ae33)
+        marker_302d9669c3c28e943fc551f5ff2ef8c3.bindPopup(popup_8656e6663cac2e50313f7cf12fde0250)
         ;
 
         
     
     
-                marker_de645a71f115dde94dfd3f60e5839d18.setIcon(icon_0d555d6df17f99c429d2ff978c3f33dd);
+                marker_302d9669c3c28e943fc551f5ff2ef8c3.setIcon(icon_5cf47aecf66e2a7608300228354ff532);
             
     
-            var marker_af15b4fc1aa7b327010136f113398658 = L.marker(
+            var marker_45827e3f7a74feae3bc1ab8ddef2c78d = L.marker(
                 [9.7869, 100.0026251],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_62e7c9b3a986440527ea5ddf95d340df = L.AwesomeMarkers.icon(
+            var icon_1839be8fc4a883912322a5205f3ff47f = L.AwesomeMarkers.icon(
                 {
   "markerColor": "orange",
   "iconColor": "white",
@@ -218,34 +218,34 @@
             );
         
     
-        var popup_bff10546abb731e5f7e5f129f1f0730f = L.popup({
+        var popup_4aa88245f2ad35c2254344418488d21f = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_f6234e7f4e8e63e7d1d91f9bc296aa56 = $(`<div id="html_f6234e7f4e8e63e7d1d91f9bc296aa56" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
-                popup_bff10546abb731e5f7e5f129f1f0730f.setContent(html_f6234e7f4e8e63e7d1d91f9bc296aa56);
+                var html_75e153cf224213895797668855ee33cc = $(`<div id="html_75e153cf224213895797668855ee33cc" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
+                popup_4aa88245f2ad35c2254344418488d21f.setContent(html_75e153cf224213895797668855ee33cc);
             
         
 
-        marker_af15b4fc1aa7b327010136f113398658.bindPopup(popup_bff10546abb731e5f7e5f129f1f0730f)
+        marker_45827e3f7a74feae3bc1ab8ddef2c78d.bindPopup(popup_4aa88245f2ad35c2254344418488d21f)
         ;
 
         
     
     
-                marker_af15b4fc1aa7b327010136f113398658.setIcon(icon_62e7c9b3a986440527ea5ddf95d340df);
+                marker_45827e3f7a74feae3bc1ab8ddef2c78d.setIcon(icon_1839be8fc4a883912322a5205f3ff47f);
             
     
-            var marker_2c02a57d89e10a9761f2a2a60bd38cc7 = L.marker(
+            var marker_55833f082d476157e3874b5a3e3bc1ca = L.marker(
                 [9.7869, 100.0026251],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_72573541b7e4e8bdb683c6b514717c55 = L.AwesomeMarkers.icon(
+            var icon_1db1b06c8ff5de5a927553a8a0fa4ac9 = L.AwesomeMarkers.icon(
                 {
   "markerColor": "orange",
   "iconColor": "white",
@@ -256,36 +256,36 @@
             );
         
     
-        var popup_f9430b074726b1b13559ae5222941dfb = L.popup({
+        var popup_38e395fb8b6a0764d893e633da56a090 = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_df12113b0071f3d68091fffeac496626 = $(`<div id="html_df12113b0071f3d68091fffeac496626" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
-                popup_f9430b074726b1b13559ae5222941dfb.setContent(html_df12113b0071f3d68091fffeac496626);
+                var html_393e38f51242438731c92185df208af4 = $(`<div id="html_393e38f51242438731c92185df208af4" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
+                popup_38e395fb8b6a0764d893e633da56a090.setContent(html_393e38f51242438731c92185df208af4);
             
         
 
-        marker_2c02a57d89e10a9761f2a2a60bd38cc7.bindPopup(popup_f9430b074726b1b13559ae5222941dfb)
+        marker_55833f082d476157e3874b5a3e3bc1ca.bindPopup(popup_38e395fb8b6a0764d893e633da56a090)
         ;
 
         
     
     
-                marker_2c02a57d89e10a9761f2a2a60bd38cc7.setIcon(icon_72573541b7e4e8bdb683c6b514717c55);
+                marker_55833f082d476157e3874b5a3e3bc1ca.setIcon(icon_1db1b06c8ff5de5a927553a8a0fa4ac9);
             
     
-            var marker_7a75b04138a94b4b65821ea514839b84 = L.marker(
+            var marker_c8cdc44f95f181bd47d25ae77ae9f208 = L.marker(
                 [9.7262, 99.9958251],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_e47cb341597c794a9dd22fd4662e9347 = L.AwesomeMarkers.icon(
+            var icon_cbb9070680be0b281488e9123a0cbdce = L.AwesomeMarkers.icon(
                 {
-  "markerColor": "blue",
+  "markerColor": "red",
   "iconColor": "white",
   "icon": "dog",
   "prefix": "fa",
@@ -294,36 +294,36 @@
             );
         
     
-        var popup_b5b436fc88ba5f87a8e5e13fb0814b97 = L.popup({
+        var popup_94cd77da10b5498c2ebc25b77720caf6 = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_93bc8266966ccc44978baaa85b989eb2 = $(`<div id="html_93bc8266966ccc44978baaa85b989eb2" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
-                popup_b5b436fc88ba5f87a8e5e13fb0814b97.setContent(html_93bc8266966ccc44978baaa85b989eb2);
+                var html_45f3402d6b0aafc8f82aa5739f3ef67e = $(`<div id="html_45f3402d6b0aafc8f82aa5739f3ef67e" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
+                popup_94cd77da10b5498c2ebc25b77720caf6.setContent(html_45f3402d6b0aafc8f82aa5739f3ef67e);
             
         
 
-        marker_7a75b04138a94b4b65821ea514839b84.bindPopup(popup_b5b436fc88ba5f87a8e5e13fb0814b97)
+        marker_c8cdc44f95f181bd47d25ae77ae9f208.bindPopup(popup_94cd77da10b5498c2ebc25b77720caf6)
         ;
 
         
     
     
-                marker_7a75b04138a94b4b65821ea514839b84.setIcon(icon_e47cb341597c794a9dd22fd4662e9347);
+                marker_c8cdc44f95f181bd47d25ae77ae9f208.setIcon(icon_cbb9070680be0b281488e9123a0cbdce);
             
     
-            var marker_1b8d39533780f2499047cc03fbfc85bc = L.marker(
+            var marker_85601cf1dec92cbfd01a48af45d3a353 = L.marker(
                 [9.7262, 99.9958251],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_a7f7c37f2c77f01c3d78387718b66962 = L.AwesomeMarkers.icon(
+            var icon_f750e62aafe99d06270fc99518f74db8 = L.AwesomeMarkers.icon(
                 {
-  "markerColor": "blue",
+  "markerColor": "red",
   "iconColor": "white",
   "icon": "dog",
   "prefix": "fa",
@@ -332,36 +332,36 @@
             );
         
     
-        var popup_e830cc964c1cf2bf7fe42f798d15f203 = L.popup({
+        var popup_18513f3af1b67cc75e91ec8665bb766c = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_961c802171cc32f3fa29fe165c323cb1 = $(`<div id="html_961c802171cc32f3fa29fe165c323cb1" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
-                popup_e830cc964c1cf2bf7fe42f798d15f203.setContent(html_961c802171cc32f3fa29fe165c323cb1);
+                var html_b08c3fa20f2078547733a1562a6d06d6 = $(`<div id="html_b08c3fa20f2078547733a1562a6d06d6" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 3<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
+                popup_18513f3af1b67cc75e91ec8665bb766c.setContent(html_b08c3fa20f2078547733a1562a6d06d6);
             
         
 
-        marker_1b8d39533780f2499047cc03fbfc85bc.bindPopup(popup_e830cc964c1cf2bf7fe42f798d15f203)
+        marker_85601cf1dec92cbfd01a48af45d3a353.bindPopup(popup_18513f3af1b67cc75e91ec8665bb766c)
         ;
 
         
     
     
-                marker_1b8d39533780f2499047cc03fbfc85bc.setIcon(icon_a7f7c37f2c77f01c3d78387718b66962);
+                marker_85601cf1dec92cbfd01a48af45d3a353.setIcon(icon_f750e62aafe99d06270fc99518f74db8);
             
     
-            var marker_6c56ae776846c64b5d7a17e9a5621746 = L.marker(
+            var marker_8f34a4cdf3459d045f19b7d4170b188b = L.marker(
                 [9.7324279, 99.9930508],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_5d5b2a495784b5ad11062d491efd194c = L.AwesomeMarkers.icon(
+            var icon_61cadfac629002a4d383369bb29fb5d8 = L.AwesomeMarkers.icon(
                 {
-  "markerColor": "blue",
+  "markerColor": "red",
   "iconColor": "white",
   "icon": "dog",
   "prefix": "fa",
@@ -370,36 +370,36 @@
             );
         
     
-        var popup_a77a422caa1211aae99aa5906f1c4d43 = L.popup({
+        var popup_1e7a23bd274a4049e4c02aefd61e92ea = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_79b45847737d3b9c0427de5b4fa29371 = $(`<div id="html_79b45847737d3b9c0427de5b4fa29371" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where              </div>         </div>         </div>`)[0];
-                popup_a77a422caa1211aae99aa5906f1c4d43.setContent(html_79b45847737d3b9c0427de5b4fa29371);
+                var html_535f53a3f90881a3130be2969d6ce9cf = $(`<div id="html_535f53a3f90881a3130be2969d6ce9cf" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where              </div>         </div>         </div>`)[0];
+                popup_1e7a23bd274a4049e4c02aefd61e92ea.setContent(html_535f53a3f90881a3130be2969d6ce9cf);
             
         
 
-        marker_6c56ae776846c64b5d7a17e9a5621746.bindPopup(popup_a77a422caa1211aae99aa5906f1c4d43)
+        marker_8f34a4cdf3459d045f19b7d4170b188b.bindPopup(popup_1e7a23bd274a4049e4c02aefd61e92ea)
         ;
 
         
     
     
-                marker_6c56ae776846c64b5d7a17e9a5621746.setIcon(icon_5d5b2a495784b5ad11062d491efd194c);
+                marker_8f34a4cdf3459d045f19b7d4170b188b.setIcon(icon_61cadfac629002a4d383369bb29fb5d8);
             
     
-            var marker_96842b7f11ee71707ace1e2871187297 = L.marker(
+            var marker_96280ee67a3ef72a0ba2bc3065680f46 = L.marker(
                 [9.7324279, 99.9930508],
                 {
 }
-            ).addTo(marker_cluster_004955d832dde49873410c1516343fb4);
+            ).addTo(marker_cluster_c86ed6d47ab039aca8265fbc9d174de6);
         
     
-            var icon_134d8de1bffe0f2347c9e02d274a0d0e = L.AwesomeMarkers.icon(
+            var icon_fc28bb090c07d35d53f6eaa792912a1e = L.AwesomeMarkers.icon(
                 {
-  "markerColor": "blue",
+  "markerColor": "red",
   "iconColor": "white",
   "icon": "dog",
   "prefix": "fa",
@@ -408,27 +408,27 @@
             );
         
     
-        var popup_961ec87a07f6cbc84d516a9e7eec5e02 = L.popup({
+        var popup_46ffcfcfbe2ffbc5c53a67383d0e9fef = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_678e9e755240ee56bb14fa5bd3eb573d = $(`<div id="html_678e9e755240ee56bb14fa5bd3eb573d" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                          <b>🌐 Language:</b> Thai<br>             <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (0622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where              </div>         </div>         </div>`)[0];
-                popup_961ec87a07f6cbc84d516a9e7eec5e02.setContent(html_678e9e755240ee56bb14fa5bd3eb573d);
+                var html_31da73655997b872b3191ca455a451d7 = $(`<div id="html_31da73655997b872b3191ca455a451d7" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><span style='background-color:orange;color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>Pending</span><br><br>                          <b>🌐 Language:</b> Thai<br>             <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where to search             </div>         </div>         </div>`)[0];
+                popup_46ffcfcfbe2ffbc5c53a67383d0e9fef.setContent(html_31da73655997b872b3191ca455a451d7);
             
         
 
-        marker_96842b7f11ee71707ace1e2871187297.bindPopup(popup_961ec87a07f6cbc84d516a9e7eec5e02)
+        marker_96280ee67a3ef72a0ba2bc3065680f46.bindPopup(popup_46ffcfcfbe2ffbc5c53a67383d0e9fef)
         ;
 
         
     
     
-                marker_96842b7f11ee71707ace1e2871187297.setIcon(icon_134d8de1bffe0f2347c9e02d274a0d0e);
+                marker_96280ee67a3ef72a0ba2bc3065680f46.setIcon(icon_fc28bb090c07d35d53f6eaa792912a1e);
             
     
-            marker_cluster_004955d832dde49873410c1516343fb4.addTo(map_c53a65175703684bd34d3a9fbcbaa8d3);
+            marker_cluster_c86ed6d47ab039aca8265fbc9d174de6.addTo(map_954e4e1ccf4bfda233a98a2ce4a169e0);
         
 </script>
 </html>

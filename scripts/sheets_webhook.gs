@@ -18,16 +18,24 @@ const WORKFLOW_ID = 'update-map.yml';
  * Triggers when any cell in the sheet is edited
  */
 function onEdit(e) {
+  // Handle case where function is run manually (e will be undefined)
+  if (!e || !e.source) {
+    console.log('⚠️ onEdit called manually - no edit event data available');
+    console.log('Use testWebhook() function to test manually');
+    return;
+  }
+  
   // Only trigger for the main data sheet
   const sheet = e.source.getActiveSheet();
   if (sheet.getName() !== 'List v2') {
+    console.log(`ℹ️ Edit on sheet "${sheet.getName()}" - ignoring (only "List v2" triggers updates)`);
     return;
   }
   
   // Add small delay to avoid multiple rapid triggers
   Utilities.sleep(2000);
   
-  console.log('Sheet edited, triggering GitHub Action...');
+  console.log('✅ Sheet "List v2" edited, triggering GitHub Action...');
   triggerGitHubAction();
 }
 

@@ -114,9 +114,10 @@ class DataManager:
         if 'Status' not in df.columns:
             df['Status'] = 'Pending'
         
-        # Clean coordinates - replace #REF! and other errors
-        df['Latitude'] = df['Latitude'].replace(['#REF!', '#ERROR!', '#N/A'], None)
-        df['Longitude'] = df['Longitude'].replace(['#REF!', '#ERROR!', '#N/A'], None)
+        # Clean coordinates and other problematic values
+        for col in df.columns:
+            df[col] = df[col].replace(['#REF!', '#ERROR!', '#N/A', '#NAME?'], '')
+        
         df['Latitude'] = pd.to_numeric(df['Latitude'], errors='coerce')
         df['Longitude'] = pd.to_numeric(df['Longitude'], errors='coerce')
         
@@ -127,11 +128,13 @@ class DataManager:
         # Only keep animals with location info (Area or Link)
         df_clean = df.dropna(subset=['Location (Area)'], how='all')
         
-        # Remove test/invalid data rows
+        # Remove test/invalid data rows - handle NaN values safely
         df_clean = df_clean[
-            (df_clean['Dog/Cat'].str.lower().isin(['dog', 'cat'])) &
-            (df_clean['Location (Area)'] != 'Burmese') &
-            (df_clean['Language'] != 'Burmese')
+            (df_clean['Dog/Cat'].fillna('').str.lower().isin(['dog', 'cat'])) &
+            (df_clean['Location (Area)'].fillna('') != 'Burmese') &
+            (df_clean['Language'].fillna('') != 'Burmese') &
+            (df_clean['Location (Area)'].fillna('').str.len() > 2) &  # Minimum location name
+            (df_clean['Contact Name'].fillna('').str.len() > 1)       # Minimum contact name
         ]
         
         # Add priority scoring
