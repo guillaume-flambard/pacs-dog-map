@@ -1,0 +1,33 @@
+Hey Claude, I’d like your help reviewing and improving a small open-source rescue project I’m working on with a volunteer named Alaska in Koh Phangan (Thailand).
+
+The goal is to create a basic visual map + list of all dogs on the island that need to be neutered or spayed only. It’s meant to be used internally by rescue organizations like PACS, not the public.
+
+🔍 Core Requirements (from Alaska):
+	•	The tool must be very simple, no mobile app needed.
+	•	It should collect key info via WhatsApp (or a form): age, sex, temperament, location (Google Maps link), contact, optional photo.
+	•	It should display a map (e.g. Folium or Leaflet) of these animals by location, with filtering by category if possible (e.g. “neutering”, “medical”, “chained”, “rehoming”).
+	•	It must be accessible via link (e.g. hosted on GitHub Pages).
+	•	If successful, the project should be open-source friendly and easily extended by others.
+
+🔗 Source of truth is this Google Sheet:
+https://docs.google.com/spreadsheets/d/1i9tfIcqu16OVwPAT_Ae7O3fy2fAzL4FZ5QTqzwJeKRk/edit?usp=sharing
+
+✅ I’ve already:
+	•	Created a Python script (generate_map.py) that reads a CSV version of that sheet and generates an index.html interactive map.
+	•	Hosted the result via GitHub Pages.
+
+I’d like your help with suggestions on how to:
+	•	Make the data collection flow easier or automated (e.g. WhatsApp integration, Google Form + Zapier, n8n)
+	•	Improve the UX or filtering options for the map
+	•	Keep it lightweight and human-friendly, while still open for contribution
+	•	Possibly sync the Google Sheet directly into the map with no need for manual CSV updates
+
+Here’s a sample row from the data:
+
+
+Location: Chaloklum
+Sex: Female
+Age: Teenager
+Temperament: Wild
+GPS: https://maps.app.goo.gl/Yaomoesr3cYoiWmn8
+Contact: Alaska, 0622355014
