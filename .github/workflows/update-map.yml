@@ -1,11 +1,10 @@
-name: Update PACS Dog Map
+name: Deploy PACS Dog Map
 
 on:
-  # Trigger when CSV files are updated
+  # Trigger on any push to main
   push:
-    paths:
-      - '*.csv'
-      - 'data/*.csv'
+    branches:
+      - main
   
   # Allow manual trigger
   workflow_dispatch:
@@ -15,13 +14,18 @@ on:
     - cron: '0 6 * * *'  # Daily at 6 AM UTC (2 PM Thailand time)
 
 jobs:
-  update-map:
+  deploy:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write
+      contents: read
       pages: write
       id-token: write
+    
+    # Allow only one concurrent deployment
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     
     steps:
     - name: Checkout repository
@@ -37,31 +41,19 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Generate enhanced map
+    - name: Generate map with new CLI
       run: |
-        python generate_enhanced_map.py
+        chmod +x ./pacs-map
+        ./pacs-map generate
         
-    - name: Commit updated map
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        
-        if [[ -n $(git status --porcelain) ]]; then
-          git add index.html
-          git commit -m "🤖 Auto-update map with latest animal data
-          
-          Generated from CSV data at $(date)
-          
-          🤖 Generated with GitHub Actions"
-          git push
-        else
-          echo "No changes to commit"
-        fi
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+      
+    - name: Upload pages artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: ./web
         
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
-        publish_branch: gh-pages
-        exclude_assets: '.github,*.py,*.csv,requirements.txt,*.md'
+      id: deployment
+      uses: actions/deploy-pages@v2
