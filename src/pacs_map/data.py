@@ -90,19 +90,34 @@ class DataManager:
     
     def _clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Clean and standardize data"""
+        # Create a copy to avoid warnings
+        df = df.copy()
+        
         # Add Status column if missing
         if 'Status' not in df.columns:
             df['Status'] = 'Pending'
         
-        # Clean coordinates
+        # Clean coordinates - replace #REF! and other errors
+        df['Latitude'] = df['Latitude'].replace(['#REF!', '#ERROR!', '#N/A'], None)
+        df['Longitude'] = df['Longitude'].replace(['#REF!', '#ERROR!', '#N/A'], None)
         df['Latitude'] = pd.to_numeric(df['Latitude'], errors='coerce')
         df['Longitude'] = pd.to_numeric(df['Longitude'], errors='coerce')
         
-        # Remove empty rows
-        df_clean = df.dropna(subset=['Dog/Cat', 'Location (Area)'], how='all')
+        # Clean phone numbers - convert to string
+        if 'Contact Phone #' in df.columns:
+            df['Contact Phone #'] = df['Contact Phone #'].astype(str).replace('nan', '')
+        
+        # Only keep animals with location info (Area or Link)
+        df_clean = df.dropna(subset=['Location (Area)'], how='all')
         
         # Add priority scoring
         df_clean['Priority_Score'] = df_clean.apply(self._calculate_priority, axis=1)
+        
+        print(f"📊 Data cleaning summary:")
+        print(f"   - Total animals: {len(df_clean)}")
+        print(f"   - Pregnant animals: {(df_clean['Pregnant?'] == 'Yes').sum()}")
+        print(f"   - Animals with location links: {df_clean['Location Link'].notna().sum()}")
+        print(f"   - High priority (score > 5): {(df_clean['Priority_Score'] > 5).sum()}")
         
         return df_clean
     
