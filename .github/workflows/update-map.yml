@@ -8,6 +8,15 @@ on:
   
   # Allow manual trigger
   workflow_dispatch:
+    inputs:
+      trigger_source:
+        description: 'Source that triggered this workflow'
+        required: false
+        default: 'manual'
+  
+  # API trigger for webhooks (Google Sheets, Zapier, etc.)
+  repository_dispatch:
+    types: [sheets-updated]
   
   # Schedule daily updates (optional)
   schedule:
@@ -28,6 +37,12 @@ jobs:
       cancel-in-progress: false
     
     steps:
+    - name: Log trigger source
+      run: |
+        echo "🚀 Workflow triggered by: ${{ github.event_name }}"
+        echo "📋 Trigger source: ${{ github.event.inputs.trigger_source || 'automatic' }}"
+        echo "⏰ Timestamp: $(date)"
+        
     - name: Checkout repository
       uses: actions/checkout@v4
       
