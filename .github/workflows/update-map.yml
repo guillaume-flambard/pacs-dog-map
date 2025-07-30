@@ -41,9 +41,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Generate map with new CLI
+    - name: Sync from Google Sheets and generate map
       run: |
         chmod +x ./pacs-map
+        ./pacs-map sync
         ./pacs-map generate
         
     - name: Setup Pages
