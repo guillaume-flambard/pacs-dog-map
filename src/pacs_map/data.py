@@ -25,44 +25,61 @@ class DataManager:
     
     def sync_from_google_sheets(self) -> Optional[pd.DataFrame]:
         """Download and process data from Google Sheets"""
-        csv_url = f"https://docs.google.com/spreadsheets/d/{self.config.GOOGLE_SHEET_ID}/export?format=csv&gid={self.config.GOOGLE_SHEET_GID}"
+        # Use published CSV URL (more reliable for GitHub Actions)
+        csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRbjv9C088piZwRGSqqW4sFlctHS_pLfRdwuvPtUOUIVtA4TCiPFJQqmvdHw7R69KK1Y56ezUKguxi6/pub?gid=1076834206&single=true&output=csv"
         
-        try:
-            print("📥 Downloading data from Google Sheets...")
-            response = requests.get(csv_url)
-            response.raise_for_status()
-            
-            # Read CSV data
-            df = pd.read_csv(StringIO(response.text))
-            print(f"✅ Downloaded {len(df)} records")
-            
-            # Process coordinates
-            print("🗺️ Processing coordinates...")
-            df, coords_fixed = self.coordinate_extractor.process_dataframe(df)
-            print(f"🔧 Fixed coordinates for {coords_fixed} records")
-            
-            # Clean and process data
-            df = self._clean_data(df)
-            
-            # Save processed data
-            data_path = self.config.get_data_path(self.config.SHEETS_DATA_FILE)
-            df.to_csv(data_path, index=False)
-            print(f"💾 Saved {len(df)} valid records to {data_path}")
-            
-            return df
-            
-        except Exception as e:
-            print(f"❌ Error syncing from Google Sheets: {e}")
-            return None
+        # Fallback to old method if published URL fails
+        fallback_url = f"https://docs.google.com/spreadsheets/d/{self.config.GOOGLE_SHEET_ID}/export?format=csv&gid={self.config.GOOGLE_SHEET_GID}"
+        
+        # Try published URL first, then fallback
+        for url_desc, url in [("published", csv_url), ("direct export", fallback_url)]:
+            try:
+                print(f"📥 Downloading data from Google Sheets ({url_desc})...")
+                response = requests.get(url)
+                response.raise_for_status()
+                
+                # Check if we got HTML (redirect) instead of CSV
+                if response.text.startswith('<HTML>') or response.text.startswith('<!DOCTYPE'):
+                    print(f"⚠️ Got HTML redirect from {url_desc} URL, trying next method...")
+                    continue
+                
+                # Read CSV data
+                df = pd.read_csv(StringIO(response.text))
+                print(f"✅ Downloaded {len(df)} records from {url_desc} URL")
+                break
+                
+            except Exception as e:
+                print(f"❌ Failed to download from {url_desc} URL: {e}")
+                if url_desc == "direct export":  # Last attempt failed
+                    raise e
+                continue
+        
+        # Process coordinates
+        print("🗺️ Processing coordinates...")
+        df, coords_fixed = self.coordinate_extractor.process_dataframe(df)
+        print(f"🔧 Fixed coordinates for {coords_fixed} records")
+        
+        # Clean and process data
+        df = self._clean_data(df)
+        
+        # Save processed data
+        data_path = self.config.get_data_path(self.config.SHEETS_DATA_FILE)
+        df.to_csv(data_path, index=False)
+        print(f"💾 Saved {len(df)} valid records to {data_path}")
+        
+        return df
     
     def load_data(self) -> Optional[pd.DataFrame]:
         """Load data from available sources (in priority order)"""
         data_sources = [
-            self.config.get_data_path(self.config.PROCESSED_DATA_FILE),
+            # Priority 1: Fresh sync from Google Sheets
             self.config.get_data_path(self.config.SHEETS_DATA_FILE),
-            "data_from_sheets_fixed.csv",  # Legacy
-            "sample_data.csv",  # Legacy
-            "PACS_Test_1_List_v2.csv"  # Legacy
+            # Priority 2: Previously processed data (fallback)
+            self.config.get_data_path(self.config.PROCESSED_DATA_FILE),
+            # Legacy files for compatibility
+            "data_from_sheets_fixed.csv",
+            "sample_data.csv", 
+            "PACS_Test_1_List_v2.csv"
         ]
         
         for source in data_sources:
