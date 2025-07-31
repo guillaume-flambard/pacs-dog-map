@@ -134,10 +134,12 @@ class PacsMapGenerator:
             action_color = 'red' if 'spay' in row['Pop-Up Info'].lower() else 'blue'
             action_info = f"<span style='background-color:{action_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>{row['Pop-Up Info']}</span>"
         
-        # Handle photos
+        # Handle photos - convert Google Drive URLs to direct image URLs
         photo_html = ""
         if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
-            photo_html = f"<br><img src='{row['Photo']}' style='max-width:200px;max-height:150px;'><br>"
+            photo_url = self._convert_google_drive_url(row['Photo'])
+            if photo_url:
+                photo_html = f"<br><img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;'><br>"
         
         # No status badge - not in original sheets
         
@@ -167,6 +169,36 @@ class PacsMapGenerator:
         </div>
         """
         return popup_html
+    
+    def _convert_google_drive_url(self, url: str) -> str:
+        """Convert Google Drive sharing URL to direct image URL"""
+        import re
+        
+        if not url or pd.isna(url):
+            return ""
+        
+        # Extract file ID from Google Drive URLs
+        # Format: https://drive.google.com/open?id=FILE_ID
+        # or: https://drive.google.com/file/d/FILE_ID/view
+        
+        file_id = None
+        
+        # Pattern 1: open?id=FILE_ID
+        match = re.search(r'[?&]id=([a-zA-Z0-9_-]+)', url)
+        if match:
+            file_id = match.group(1)
+        
+        # Pattern 2: /file/d/FILE_ID/
+        match = re.search(r'/file/d/([a-zA-Z0-9_-]+)/', url)
+        if match:
+            file_id = match.group(1)
+        
+        if file_id:
+            # Convert to direct image URL
+            return f"https://drive.google.com/uc?export=view&id={file_id}"
+        
+        # Return original URL if no conversion possible
+        return url
     
     def _add_legend(self, m: folium.Map):
         """Add legend to the map"""
