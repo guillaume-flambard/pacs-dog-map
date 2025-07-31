@@ -110,9 +110,7 @@ class DataManager:
         # Create a copy to avoid warnings
         df = df.copy()
         
-        # Add Status column if missing
-        if 'Status' not in df.columns:
-            df['Status'] = 'Pending'
+        # Don't add Status column - not in original sheets
         
         # Clean coordinates and other problematic values
         for col in df.columns:
@@ -137,34 +135,15 @@ class DataManager:
             (df_clean['Contact Name'].fillna('').str.len() > 1)       # Minimum contact name
         ]
         
-        # Add priority scoring
-        df_clean['Priority_Score'] = df_clean.apply(self._calculate_priority, axis=1)
+        # Don't add Priority_Score - not in original sheets
         
         print(f"📊 Data cleaning summary:")
         print(f"   - Total animals: {len(df_clean)}")
         print(f"   - Pregnant animals: {(df_clean['Pregnant?'] == 'Yes').sum()}")
         print(f"   - Animals with location links: {df_clean['Location Link'].notna().sum()}")
-        print(f"   - High priority (score > 5): {(df_clean['Priority_Score'] > 5).sum()}")
         
         return df_clean
     
-    def _calculate_priority(self, row) -> int:
-        """Calculate priority score for an animal"""
-        score = 0
-        
-        if row.get('Pregnant?', '').lower() == 'yes':
-            score += self.config.PRIORITY_WEIGHTS['pregnant']
-        
-        if row.get('Temperament', '').lower() == 'wild':
-            score += self.config.PRIORITY_WEIGHTS['wild']
-        
-        if row.get('Sex', '') == 'Both':
-            score += self.config.PRIORITY_WEIGHTS['multiple']
-        
-        if 'chain' in str(row.get('Location Details ', '')).lower():
-            score += self.config.PRIORITY_WEIGHTS['chained']
-        
-        return score
     
     def get_statistics(self, df: pd.DataFrame) -> dict:
         """Get statistics about the data"""
@@ -173,8 +152,6 @@ class DataManager:
         return {
             'total_animals': len(df),
             'animals_with_coords': len(valid_coords),
-            'pending': len(df[df['Status'] != 'Completed']),
-            'completed': len(df[df['Status'] == 'Completed']),
             'pregnant': len(df[df.get('Pregnant?', '').str.lower() == 'yes']),
             'wild': len(df[df.get('Temperament', '') == 'Wild']),
             'friendly': len(df[df.get('Temperament', '') == 'Friendly'])

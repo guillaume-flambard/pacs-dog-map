@@ -54,7 +54,7 @@ class PacsMapGenerator:
         
         print(f"✅ Enhanced map generated successfully: {output_path}")
         print(f"   - {stats['total_animals']} total animals")
-        print(f"   - {stats['pending']} pending, {stats['completed']} completed")
+        print(f"   - {stats['wild']} wild, {stats['friendly']} friendly")
         print(f"   - {stats['pregnant']} pregnant animals (high priority)")
         
         return output_path
@@ -99,10 +99,8 @@ class PacsMapGenerator:
             marker.add_to(marker_cluster)
     
     def _get_marker_color(self, row: pd.Series) -> str:
-        """Determine marker color based on priority and status"""
-        if row['Status'] == 'Completed':
-            return self.config.MARKER_COLORS['completed']
-        elif row.get('Pregnant?', '').lower() == 'yes':
+        """Determine marker color based on animal properties"""
+        if row.get('Pregnant?', '').lower() == 'yes':
             return self.config.MARKER_COLORS['pregnant']
         elif row.get('Temperament', '') == 'Wild':
             return self.config.MARKER_COLORS['wild']
@@ -141,16 +139,13 @@ class PacsMapGenerator:
         if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
             photo_html = f"<br><img src='{row['Photo']}' style='max-width:200px;max-height:150px;'><br>"
         
-        # Status badge
-        status = row.get('Status', 'Pending')
-        status_color = 'green' if status == 'Completed' else 'orange'
-        status_html = f"<span style='background-color:{status_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;'>{status}</span>"
+        # No status badge - not in original sheets
         
         popup_html = f"""
         <div style='font-family: Arial, sans-serif; max-width: 300px;'>
             {pregnant_info}
             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>{row['Location (Area)']}</h4>
-            {action_info}{status_html}<br><br>
+            {action_info}<br><br>
             
             {language_info}
             <b>🐾 Animal:</b> {row['Dog/Cat']}<br>
@@ -186,7 +181,6 @@ class PacsMapGenerator:
         <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:orange; margin-right:8px;"></i> Wild Animals</div>
         <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:purple; margin-right:8px;"></i> Multiple Animals</div>
         <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:blue; margin-right:8px;"></i> Standard</div>
-        <div style="margin-bottom:0;"><i class="fa fa-circle" style="color:green; margin-right:8px;"></i> Completed</div>
         </div>
         '''
         m.get_root().html.add_child(folium.Element(legend_html))
@@ -201,8 +195,8 @@ class PacsMapGenerator:
                     
         <h4 style="margin-top:0; color: #2E86AB;">📊 PACS Statistics</h4>
         <p><b>Total Animals:</b> {stats['total_animals']}</p>
-        <p><b>Pending:</b> {stats['pending']}</p>
-        <p><b>Completed:</b> {stats['completed']}</p>
+        <p><b>Wild:</b> {stats['wild']}</p>
+        <p><b>Friendly:</b> {stats['friendly']}</p>
         <p><b>Pregnant (Priority):</b> {stats['pregnant']}</p>
         <hr>
         <p style="font-size:12px; color:#666;">
