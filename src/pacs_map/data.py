@@ -160,8 +160,8 @@ class DataManager:
         # Create new dataframe with standard column names
         standard_df = pd.DataFrame()
         
-        # Map each column from form format to standard format
-        standard_df['Language'] = df.get('Language', '')
+        # Map each column from form format to standard format with encoding fixes
+        standard_df['Language'] = df.get('Language', '').apply(self._fix_language_encoding)
         
         # Pop-Up Info: "Medical attention / Ask for information" -> "Ask for Info"
         standard_df['Pop-Up Info'] = df.get('What type of help does this animal need?', '').apply(
@@ -214,6 +214,37 @@ class DataManager:
         
         print(f"✅ Converted {len(standard_df)} form responses to standard format")
         return standard_df
+    
+    def _fix_language_encoding(self, language_text) -> str:
+        """Fix encoding issues with Thai and other non-Latin languages"""
+        if pd.isna(language_text) or not language_text:
+            return ""
+        
+        # Common language mappings to fix encoding issues
+        language_mappings = {
+            'Thai': 'Thai (ไทย)',
+            'ภาษาไทย': 'Thai (ไทย)', 
+            'à¸ à¸²à¸©à¸²à¹à¸à¸¢': 'Thai (ไทย)',
+            'Burmese': 'Burmese (မြန်မာ)',
+            'မြန်မာဘာသာ': 'Burmese (မြန်မာ)',
+            'English': 'English'
+        }
+        
+        text = str(language_text).strip()
+        
+        # Check direct mapping first
+        if text in language_mappings:
+            return language_mappings[text]
+        
+        # Try to detect mangled Thai characters
+        if any(char in text for char in ['à¸', 'à¹', 'à¸©', 'à¸²']):
+            return 'Thai (ไทย)'
+        
+        # Try to detect mangled Burmese characters  
+        if any(char in text for char in ['á€', 'á€™', 'á€¼', 'á€­']):
+            return 'Burmese (မြန်မာ)'
+        
+        return text
     
     def get_statistics(self, df: pd.DataFrame) -> dict:
         """Get statistics about the data"""

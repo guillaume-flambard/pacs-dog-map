@@ -123,10 +123,11 @@ class PacsMapGenerator:
         if row.get('Pregnant?', '').lower() == 'yes':
             pregnant_info = "<b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>"
         
-        # Language info
+        # Language info with proper encoding
         language_info = ""
         if pd.notna(row.get('Language', '')) and row['Language'] not in ['', 'English']:
-            language_info = f"<b>🌐 Language:</b> {row['Language']}<br>"
+            language = self._fix_language_encoding(row['Language'])
+            language_info = f"<b>🌐 Language:</b> {language}<br>"
         
         # Pop-up info (action needed)
         action_info = ""
@@ -207,6 +208,39 @@ class PacsMapGenerator:
         
         # Return original URL if no conversion possible
         return url
+    
+    def _fix_language_encoding(self, language_text: str) -> str:
+        """Fix encoding issues with Thai and other non-Latin languages"""
+        if not language_text or pd.isna(language_text):
+            return ""
+        
+        # Common language mappings to fix encoding issues
+        language_mappings = {
+            'Thai': 'Thai (ไทย)',
+            'ภาษาไทย': 'Thai (ไทย)', 
+            'à¸ à¸²à¸©à¸²à¹à¸à¸¢': 'Thai (ไทย)',
+            'Burmese': 'Burmese (မြန်မာ)',
+            'မြန်မာဘာသာ': 'Burmese (မြန်မာ)',
+            'English': 'English'
+        }
+        
+        # Try to fix common encoding issues
+        text = str(language_text).strip()
+        
+        # Check if it's already in our mapping
+        if text in language_mappings:
+            return language_mappings[text]
+        
+        # Try to detect Thai characters that got mangled
+        if any(char in text for char in ['à¸', 'à¹', 'à¸©', 'à¸²']):
+            return 'Thai (ไทย)'
+        
+        # Try to detect Burmese characters that got mangled  
+        if any(char in text for char in ['á€', 'á€™', 'á€¼', 'á€­']):
+            return 'Burmese (မြန်မာ)'
+        
+        # For other cases, return the original text
+        return text
     
     def _add_legend(self, m: folium.Map):
         """Add legend to the map"""
