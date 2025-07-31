@@ -40,7 +40,7 @@ def extract_coordinates_from_url(url):
     
     return None, None
 
-def sync_from_google_sheets(sheet_id="1vNW1GtXhWHyVrGJmIEAnlzWQp_QvtfMRD3hzbgYmK9w"):
+def sync_from_google_sheets(sheet_id="1PDDu74ZpcZeb6pWxjoRgVtZdHiPb-W2MfBzpT_suUFw"):
     """
     Download data directly from Google Sheets
     Make sure the sheet is published to web as CSV
