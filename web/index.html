@@ -1,455 +1,205 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
+    
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
-
-    <meta name="viewport" content="width=device-width,
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta http-equiv="refresh" content="300">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <style>
-        #map_74d331cf2ffa412407f9ea50327dd8dc {
-            position: relative;
-            width: 100.0%;
-            height: 100.0%;
-            left: 0.0%;
-            top: 0.0%;
-        }
+            <style>
+                #map_92f48ecf3b69dcdf451f8e4c6a8ec248 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
 
-        .leaflet-container {
-            font-size: 1rem;
-        }
-    </style>
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
 
-    <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
 
-    <style>
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-        }
-    </style>
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
 
-    <script>
-        L_NO_TOUCH = false;
-        L_DISABLE_3D = false;
-    </script>
-
-
+        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
 </head>
-
 <body>
-
-
-    <div style="position: fixed; 
+    
+    
+        <div style="position: fixed; 
                     bottom: 20px; left: 20px; width: 220px; height: auto; 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:13px; padding: 12px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-
+                    
         <h4 style="margin-top:0; margin-bottom:8px; font-size:14px;">🗺️ Map Legend</h4>
-        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:red; margin-right:8px;"></i> Pregnant (HIGH
-            PRIORITY)</div>
-        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:orange; margin-right:8px;"></i> Wild
-            Animals</div>
-        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:purple; margin-right:8px;"></i> Multiple
-            Animals</div>
-        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:blue; margin-right:8px;"></i> Standard
+        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:red; margin-right:8px;"></i> Pregnant (HIGH PRIORITY)</div>
+        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:orange; margin-right:8px;"></i> Wild Animals</div>
+        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:purple; margin-right:8px;"></i> Multiple Animals</div>
+        <div style="margin-bottom:4px;"><i class="fa fa-circle" style="color:blue; margin-right:8px;"></i> Standard</div>
         </div>
-    </div>
-
-
-    <div style="position: fixed; 
+        
+    
+        <div style="position: fixed; 
                     top: 10px; right: 10px; width: 250px; 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:14px; padding: 15px; border-radius: 5px;">
-
+                    
         <h4 style="margin-top:0; color: #2E86AB;">📊 PACS Statistics</h4>
-        <p><b>Total Animals:</b> 7</p>
-        <p><b>Wild:</b> 6</p>
-        <p><b>Friendly:</b> 1</p>
-        <p><b>Pregnant (Priority):</b> 5</p>
+        <p><b>Total Animals:</b> 1</p>
+        <p><b>Wild:</b> 1</p>
+        <p><b>Friendly:</b> 0</p>
+        <p><b>Pregnant (Priority):</b> 0</p>
         <hr>
         <p style="font-size:12px; color:#666;">
-            Last updated: <span id="current-date"></span>
+        Last updated: <span id="current-date"></span>
         </p>
-    </div>
+        </div>
 
-    <script>
+        <script>
         document.getElementById('current-date').textContent = new Date().toLocaleDateString();
-    </script>
-
-
-    <div class="folium-map" id="map_74d331cf2ffa412407f9ea50327dd8dc"></div>
-
+        </script>
+        
+    
+            <div class="folium-map" id="map_92f48ecf3b69dcdf451f8e4c6a8ec248" ></div>
+        
 </body>
 <script>
+    
+    
+            var map_92f48ecf3b69dcdf451f8e4c6a8ec248 = L.map(
+                "map_92f48ecf3b69dcdf451f8e4c6a8ec248",
+                {
+                    center: [9.731, 99.99],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
 
+                }
+            );
 
-    var map_74d331cf2ffa412407f9ea50327dd8dc = L.map(
-        "map_74d331cf2ffa412407f9ea50327dd8dc",
-        {
-            center: [9.731, 99.99],
-            crs: L.CRS.EPSG3857,
-            ...{
-                "zoom": 12,
-                "zoomControl": true,
-                "preferCanvas": false,
-            }
+            
 
-        }
-    );
+        
+    
+            var tile_layer_d876efa5f3888c1b751bc3584de6420d = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
 
+            );
+        
+    
+            tile_layer_d876efa5f3888c1b751bc3584de6420d.addTo(map_92f48ecf3b69dcdf451f8e4c6a8ec248);
+        
+    
+            var tile_layer_0f96449bb0b154d9e9562725b38ed935 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
 
+            );
+        
+    
+            tile_layer_0f96449bb0b154d9e9562725b38ed935.addTo(map_92f48ecf3b69dcdf451f8e4c6a8ec248);
+        
+    
+            var marker_cluster_ece648f76c7a9dbfb554754cb7a13727 = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_8683e3e0aeaa6450e054865c197f678e = L.marker(
+                [9.6750349, 100.0607476],
+                {
+}
+            ).addTo(marker_cluster_ece648f76c7a9dbfb554754cb7a13727);
+        
+    
+            var icon_1d2fd069d5e7ef7e7e3f35ad75f9068b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "dog",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6fafda77a77247b429d9d4c8723c03e9 = L.popup({
+  "maxWidth": 350,
+});
 
+        
+            
+                var html_142f7c3f234eecf0ae244e1540c9e276 = $(`<div id="html_142f7c3f234eecf0ae244e1540c9e276" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Haad Rin</h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 4<br>             <b>⚧ Sex:</b> Both<br>             <b>🎂 Age:</b> Puppy (>6mnth)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Memo (33619389061)<br>                          <br><img src='https://drive.google.com/open?id=1cunfkmPtqOX-Kdw0y4ETAhNZTdY6d4bR' style='max-width:200px;max-height:150px;'><br>                          <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/fSYQdxptX7GuxMhR6" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> Friendly resort             </div>         </div>         </div>`)[0];
+                popup_6fafda77a77247b429d9d4c8723c03e9.setContent(html_142f7c3f234eecf0ae244e1540c9e276);
+            
+        
 
-
-    var tile_layer_345e65f6dca8a774dfdff7e8875a7389 = L.tileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            "minZoom": 0,
-            "maxZoom": 19,
-            "maxNativeZoom": 19,
-            "noWrap": false,
-            "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
-            "subdomains": "abc",
-            "detectRetina": false,
-            "tms": false,
-            "opacity": 1,
-        }
-
-    );
-
-
-    tile_layer_345e65f6dca8a774dfdff7e8875a7389.addTo(map_74d331cf2ffa412407f9ea50327dd8dc);
-
-
-    var tile_layer_b04d8d50048f65e5d9abc5ff1b6e57b0 = L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-        {
-            "minZoom": 0,
-            "maxZoom": 20,
-            "maxNativeZoom": 20,
-            "noWrap": false,
-            "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
-            "subdomains": "abcd",
-            "detectRetina": false,
-            "tms": false,
-            "opacity": 1,
-        }
-
-    );
-
-
-    tile_layer_b04d8d50048f65e5d9abc5ff1b6e57b0.addTo(map_74d331cf2ffa412407f9ea50327dd8dc);
-
-
-    var marker_cluster_2e4dac0981c28a7cba89274efe6dce68 = L.markerClusterGroup(
-        {
-        }
-    );
-
-
-    var marker_879dd973e0db483337db478c922c72b3 = L.marker(
-        [9.7282, 99.9915251],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_5eeb156372aefd6fbecf238b67497269 = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "red",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_128566dca2cf2dff67b7e2ff7423a6fa = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_fa96cc642743beb93cc51a47d069d8c9 = $(`<div id="html_fa96cc642743beb93cc51a47d069d8c9" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 2<br>             <b>⚧ Sex:</b> Both<br>             <b>🎂 Age:</b> Puppy (>6mnth)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/4evG154Z9U5miZ9S6" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> on right BEFORE dump             </div>         </div>         </div>`)[0];
-    popup_128566dca2cf2dff67b7e2ff7423a6fa.setContent(html_fa96cc642743beb93cc51a47d069d8c9);
-
-
-
-    marker_879dd973e0db483337db478c922c72b3.bindPopup(popup_128566dca2cf2dff67b7e2ff7423a6fa)
+        marker_8683e3e0aeaa6450e054865c197f678e.bindPopup(popup_6fafda77a77247b429d9d4c8723c03e9)
         ;
 
-
-
-
-    marker_879dd973e0db483337db478c922c72b3.setIcon(icon_5eeb156372aefd6fbecf238b67497269);
-
-
-    var marker_57e94cc6b8c240f45854b18aa9a5a454 = L.marker(
-        [9.7869, 100.0026251],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_3d93c2374e55daf06a58c03629aadff5 = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "orange",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_c776071cb030d53cc2971cc1ea4f82b5 = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_865a66a43901eb41b848088953da8876 = $(`<div id="html_865a66a43901eb41b848088953da8876" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
-    popup_c776071cb030d53cc2971cc1ea4f82b5.setContent(html_865a66a43901eb41b848088953da8876);
-
-
-
-    marker_57e94cc6b8c240f45854b18aa9a5a454.bindPopup(popup_c776071cb030d53cc2971cc1ea4f82b5)
-        ;
-
-
-
-
-    marker_57e94cc6b8c240f45854b18aa9a5a454.setIcon(icon_3d93c2374e55daf06a58c03629aadff5);
-
-
-    var marker_083ea7c50c2641f5a1197dbd68b9a854 = L.marker(
-        [9.7869, 100.0026251],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_df18237d8e5aed5d06d81e3bea21cefa = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "orange",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_1e41188a7f1563f002377549330623d4 = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_0295f2b9749b947404f1d3c5d92a92d9 = $(`<div id="html_0295f2b9749b947404f1d3c5d92a92d9" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Chaloklum</h4>             <span style='background-color:blue;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Ask for Info</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Teenager (6mnth - 1yr)<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/Yaomoesr3cYoiWmn8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) on beach              </div>         </div>         </div>`)[0];
-    popup_1e41188a7f1563f002377549330623d4.setContent(html_0295f2b9749b947404f1d3c5d92a92d9);
-
-
-
-    marker_083ea7c50c2641f5a1197dbd68b9a854.bindPopup(popup_1e41188a7f1563f002377549330623d4)
-        ;
-
-
-
-
-    marker_083ea7c50c2641f5a1197dbd68b9a854.setIcon(icon_df18237d8e5aed5d06d81e3bea21cefa);
-
-
-    var marker_b8b88977003d30e266969cc55fff6220 = L.marker(
-        [9.7262, 99.9958251],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_990ef4cd891ef1cbe03d8a0c5ae1cb5f = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "red",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_ebc06b78535f7823d558cc23cfc860dc = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_ff4a0442f7b2d7dbc953572a4bf26469 = $(`<div id="html_ff4a0442f7b2d7dbc953572a4bf26469" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
-    popup_ebc06b78535f7823d558cc23cfc860dc.setContent(html_ff4a0442f7b2d7dbc953572a4bf26469);
-
-
-
-    marker_b8b88977003d30e266969cc55fff6220.bindPopup(popup_ebc06b78535f7823d558cc23cfc860dc)
-        ;
-
-
-
-
-    marker_b8b88977003d30e266969cc55fff6220.setIcon(icon_990ef4cd891ef1cbe03d8a0c5ae1cb5f);
-
-
-    var marker_efdb0d20d73c0803c38016a0da2cc802 = L.marker(
-        [9.7262, 99.9958251],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_8cc487eeae3248ef707b64d6a8abf6c1 = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "red",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_7c7b3959402127a856789422154af506 = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_9b18e930c967d2964d824df9100bb7f1 = $(`<div id="html_9b18e930c967d2964d824df9100bb7f1" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Madewan </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 3<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/z4wbCF394Gwdqv5J8" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> (PAIR) At vacant lot by 'remember restaurant' used to be              </div>         </div>         </div>`)[0];
-    popup_7c7b3959402127a856789422154af506.setContent(html_9b18e930c967d2964d824df9100bb7f1);
-
-
-
-    marker_efdb0d20d73c0803c38016a0da2cc802.bindPopup(popup_7c7b3959402127a856789422154af506)
-        ;
-
-
-
-
-    marker_efdb0d20d73c0803c38016a0da2cc802.setIcon(icon_8cc487eeae3248ef707b64d6a8abf6c1);
-
-
-    var marker_95518a14b0b53af09c0fbe7249237ed6 = L.marker(
-        [9.7324279, 99.9930508],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_049605a0f235d4d66326e27d639f24cb = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "red",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_b6ff5b56bb8218cad7f59ae67200f428 = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_fd5c99f5a4d87b94a7c63ff71eb957d2 = $(`<div id="html_fd5c99f5a4d87b94a7c63ff71eb957d2" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Wild<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where              </div>         </div>         </div>`)[0];
-    popup_b6ff5b56bb8218cad7f59ae67200f428.setContent(html_fd5c99f5a4d87b94a7c63ff71eb957d2);
-
-
-
-    marker_95518a14b0b53af09c0fbe7249237ed6.bindPopup(popup_b6ff5b56bb8218cad7f59ae67200f428)
-        ;
-
-
-
-
-    marker_95518a14b0b53af09c0fbe7249237ed6.setIcon(icon_049605a0f235d4d66326e27d639f24cb);
-
-
-    var marker_84c0fd8d82cf7ae760099abcb5696aa2 = L.marker(
-        [9.7324279, 99.9930508],
-        {
-        }
-    ).addTo(marker_cluster_2e4dac0981c28a7cba89274efe6dce68);
-
-
-    var icon_b9f36a662d2d3caaced4385772c3934a = L.AwesomeMarkers.icon(
-        {
-            "markerColor": "red",
-            "iconColor": "white",
-            "icon": "dog",
-            "prefix": "fa",
-            "extraClasses": "fa-rotate-0",
-        }
-    );
-
-
-    var popup_a6864e6d40ad35a330d856939316f73d = L.popup({
-        "maxWidth": 350,
-    });
-
-
-
-    var html_e1acb9c56d125b9fb2fdfc908f660547 = $(`<div id="html_e1acb9c56d125b9fb2fdfc908f660547" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>             <b style='color: red;'>🤰 PREGNANT - HIGH PRIORITY</b><br>             <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Thong Sala </h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                          <b>🌐 Language:</b> Thai<br>             <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Male<br>             <b>🎂 Age:</b> Adult<br>             <b>😊 Temperament:</b> Friendly<br>             <b>📞 Contact:</b> Alaska (622355014)<br>                                                    <div style='margin-top: 10px;'>                 <a href="https://maps.app.goo.gl/chQYyX23kEy2feUv5" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> At the 7-11 but lives locally not sure where to search             </div>         </div>         </div>`)[0];
-    popup_a6864e6d40ad35a330d856939316f73d.setContent(html_e1acb9c56d125b9fb2fdfc908f660547);
-
-
-
-    marker_84c0fd8d82cf7ae760099abcb5696aa2.bindPopup(popup_a6864e6d40ad35a330d856939316f73d)
-        ;
-
-
-
-
-    marker_84c0fd8d82cf7ae760099abcb5696aa2.setIcon(icon_b9f36a662d2d3caaced4385772c3934a);
-
-
-    marker_cluster_2e4dac0981c28a7cba89274efe6dce68.addTo(map_74d331cf2ffa412407f9ea50327dd8dc);
-
+        
+    
+    
+                marker_8683e3e0aeaa6450e054865c197f678e.setIcon(icon_1d2fd069d5e7ef7e7e3f35ad75f9068b);
+            
+    
+            marker_cluster_ece648f76c7a9dbfb554754cb7a13727.addTo(map_92f48ecf3b69dcdf451f8e4c6a8ec248);
+        
 </script>
-
 </html>

@@ -25,8 +25,8 @@ class DataManager:
     
     def sync_from_google_sheets(self) -> Optional[pd.DataFrame]:
         """Download and process data from Google Sheets"""
-        # Use published CSV URL (more reliable for GitHub Actions)
-        csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRbjv9C088piZwRGSqqW4sFlctHS_pLfRdwuvPtUOUIVtA4TCiPFJQqmvdHw7R69KK1Y56ezUKguxi6/pub?gid=1076834206&single=true&output=csv"
+        # Use published CSV URL for form responses spreadsheet (more reliable for GitHub Actions)
+        csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLJp4fulYq6Y8pnvjOGllpGYA_I3ZMNeO-eHgAB94hl2TIPA_CmSzVafXcYklYidLWvLF2N9dObwYE/pub?gid=1857135137&single=true&output=csv"
         
         # Fallback to old method if published URL fails
         fallback_url = f"https://docs.google.com/spreadsheets/d/{self.config.GOOGLE_SHEET_ID}/export?format=csv&gid={self.config.GOOGLE_SHEET_GID}"
@@ -54,13 +54,13 @@ class DataManager:
                     raise e
                 continue
         
-        # Process coordinates
+        # Clean and process data first (includes form mapping)
+        df = self._clean_data(df)
+        
+        # Then process coordinates on the cleaned/mapped data
         print("🗺️ Processing coordinates...")
         df, coords_fixed = self.coordinate_extractor.process_dataframe(df)
         print(f"🔧 Fixed coordinates for {coords_fixed} records")
-        
-        # Clean and process data
-        df = self._clean_data(df)
         
         # Save processed data
         data_path = self.config.get_data_path(self.config.SHEETS_DATA_FILE)
@@ -110,12 +110,21 @@ class DataManager:
         # Create a copy to avoid warnings
         df = df.copy()
         
-        # Don't add Status column - not in original sheets
+        # Check if this is form responses data and map columns
+        if 'Horodateur' in df.columns or 'What type of help does this animal need?' in df.columns:
+            df = self._map_form_responses_to_standard_format(df)
         
         # Clean coordinates and other problematic values
         for col in df.columns:
-            df[col] = df[col].replace(['#REF!', '#ERROR!', '#N/A', '#NAME?'], '')
+            if col in df.columns:  # Check if column exists after mapping
+                df[col] = df[col].replace(['#REF!', '#ERROR!', '#N/A', '#NAME?'], '')
         
+        # Add coordinate columns if they don't exist
+        if 'Latitude' not in df.columns:
+            df['Latitude'] = ''
+        if 'Longitude' not in df.columns:
+            df['Longitude'] = ''
+            
         df['Latitude'] = pd.to_numeric(df['Latitude'], errors='coerce')
         df['Longitude'] = pd.to_numeric(df['Longitude'], errors='coerce')
         
@@ -144,6 +153,67 @@ class DataManager:
         
         return df_clean
     
+    def _map_form_responses_to_standard_format(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Map form response columns to standard format"""
+        print("🔄 Converting form responses to standard format...")
+        
+        # Create new dataframe with standard column names
+        standard_df = pd.DataFrame()
+        
+        # Map each column from form format to standard format
+        standard_df['Language'] = df.get('Language', '')
+        
+        # Pop-Up Info: "Medical attention / Ask for information" -> "Ask for Info"
+        standard_df['Pop-Up Info'] = df.get('What type of help does this animal need?', '').apply(
+            lambda x: 'Ask for Info' if 'Medical attention' in str(x) else 'Spay/Neuter' if 'Spay/Neuter' in str(x) else str(x) if pd.notna(x) else ''
+        )
+        
+        # Dog/Cat: "Dog 🐕" -> "Dog"
+        standard_df['Dog/Cat'] = df.get('What type of animal is this?', '').apply(
+            lambda x: 'Dog' if 'Dog' in str(x) else 'Cat' if 'Cat' in str(x) else str(x) if pd.notna(x) else ''
+        )
+        
+        standard_df['No. of Animals'] = df.get('How many animals are at this location?', '')
+        
+        # Sex: "Both male and female (mixed group)" -> "Both"
+        standard_df['Sex'] = df.get('What is the gender of the animal(s)?', '').apply(
+            lambda x: 'Both' if 'Both' in str(x) or 'mixed' in str(x) else 'Male' if 'Male only' in str(x) else 'Female' if 'Female only' in str(x) else str(x) if pd.notna(x) else ''
+        )
+        
+        # Pregnant: "No - Not pregnant" -> "No"
+        standard_df['Pregnant?'] = df.get('Are any of the animals pregnant?', '').apply(
+            lambda x: 'Yes' if 'Yes' in str(x) else 'No'
+        )
+        
+        # Age: "Young puppies/kittens (under 6 months)" -> "Puppy (>6mnth)"
+        standard_df['Age'] = df.get('How old do the animals appear to be?', '').apply(
+            lambda x: 'Puppy (>6mnth)' if 'puppies' in str(x) or 'kittens' in str(x) or 'under 6' in str(x) 
+                     else 'Teenager (6mnth - 1yr)' if 'Teenagers' in str(x) or '6 months to 1 year' in str(x)
+                     else 'Adult' if 'Adult' in str(x) 
+                     else str(x) if pd.notna(x) else ''
+        )
+        
+        # Temperament: "Mixed behavior" -> "Wild"
+        standard_df['Temperament'] = df.get('How do the animals behave around people?', '').apply(
+            lambda x: 'Friendly' if 'Friendly' in str(x) or 'approaches people' in str(x)
+                     else 'Wild' if any(word in str(x) for word in ['Wild', 'Scared', 'runs away', 'Mixed', 'behavior'])
+                     else str(x) if pd.notna(x) else ''
+        )
+        
+        standard_df['Location (Area)'] = df.get('Where did you see these animals?', '')
+        standard_df['Location Link'] = df.get('Share the Google Maps location', '')
+        standard_df['Location Details '] = df.get('Describe the exact location', '')  # Note trailing space
+        standard_df['Contact Name'] = df.get('Your name', '')
+        standard_df['Contact Phone #'] = df.get('Your phone number', '')
+        standard_df['Photo'] = df.get('Upload photos of the animal(s)', '')
+        
+        # Add missing columns
+        standard_df['Unshortened Link'] = ''
+        standard_df['Latitude'] = ''
+        standard_df['Longitude'] = ''
+        
+        print(f"✅ Converted {len(standard_df)} form responses to standard format")
+        return standard_df
     
     def get_statistics(self, df: pd.DataFrame) -> dict:
         """Get statistics about the data"""

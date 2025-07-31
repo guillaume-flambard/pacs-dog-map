@@ -11,9 +11,9 @@ from typing import Optional
 class Config:
     """Main configuration class"""
     
-    # Google Sheets
+    # Google Sheets - Form Responses Spreadsheet
     GOOGLE_SHEET_ID: str = "1PDDu74ZpcZeb6pWxjoRgVtZdHiPb-W2MfBzpT_suUFw"
-    GOOGLE_SHEET_GID: str = "1076834206"
+    GOOGLE_SHEET_GID: str = "1857135137"  # Form Responses 1 sheet
     
     # Map settings
     MAP_CENTER_LAT: float = 9.731
