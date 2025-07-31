@@ -139,7 +139,15 @@ class PacsMapGenerator:
         if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
             photo_url = self._convert_google_drive_url(row['Photo'])
             if photo_url:
-                photo_html = f"<br><img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;'><br>"
+                # Add both direct image and fallback link
+                photo_html = f"""<br>
+                <img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;' 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div style='display:none; padding:10px; background:#f0f0f0; border-radius:5px; text-align:center;'>
+                    <a href='{row['Photo']}' target='_blank' style='color:#4285F4; text-decoration:none;'>
+                        📷 View Photo (Click to open)
+                    </a>
+                </div><br>"""
         
         # No status badge - not in original sheets
         
