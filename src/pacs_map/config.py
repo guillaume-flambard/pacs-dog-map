@@ -12,7 +12,7 @@ class Config:
     """Main configuration class"""
     
     # Google Sheets
-    GOOGLE_SHEET_ID: str = "1vNW1GtXhWHyVrGJmIEAnlzWQp_QvtfMRD3hzbgYmK9w"
+    GOOGLE_SHEET_ID: str = "1PDDu74ZpcZeb6pWxjoRgVtZdHiPb-W2MfBzpT_suUFw"
     GOOGLE_SHEET_GID: str = "1076834206"
     
     # Map settings
