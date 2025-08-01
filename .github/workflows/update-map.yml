@@ -68,6 +68,12 @@ jobs:
         pip install -r requirements.txt
         
     - name: Sync from Google Sheets and generate map
+      env:
+        GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        GOOGLE_SHEET_GID: ${{ secrets.GOOGLE_SHEET_GID }}
+        GOOGLE_SHEET_PUBLISHED_ID: ${{ secrets.GOOGLE_SHEET_PUBLISHED_ID }}
+        CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+        CLOUDINARY_UPLOAD_PRESET: ${{ secrets.CLOUDINARY_UPLOAD_PRESET }}
       run: |
         chmod +x ./pacs-map
         ./pacs-map sync
