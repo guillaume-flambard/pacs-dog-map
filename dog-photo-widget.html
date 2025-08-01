@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rescue Photo Upload</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e8eaf6 0%, #bbdefb 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 24px rgba(33,150,243,0.08);
+      padding: 2.5rem 2rem;
+      max-width: 370px;
+      width: 100%;
+      text-align: center;
+    }
+    h2 {
+      font-weight: 700;
+      color: #2196f3;
+      margin-bottom: 1.2rem;
+      letter-spacing: .02em;
+    }
+    p {
+      color: #607d8b;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    #upload_widget, .url-box button {
+      background: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 2rem;
+      padding: .8rem 2.2rem;
+      font-size: 1.08rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(33,150,243,0.09);
+      transition: background 0.18s;
+      margin-top: .5rem;
+      margin-bottom: 1rem;
+    }
+    #upload_widget:hover, .url-box button:hover {
+      background: #1565c0;
+    }
+    .url-box {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      margin: 1.2rem 0 0.7rem 0;
+      justify-content: center;
+    }
+    .url-box input {
+      width: 75%;
+      padding: 0.45rem 0.8rem;
+      border: 1.5px solid #90caf9;
+      border-radius: 1rem;
+      font-size: 0.99rem;
+      background: #f7fbfd;
+      color: #111;
+    }
+    .success-preview img {
+      margin: 1rem auto 0.5rem auto;
+      max-width: 160px;
+      border-radius: 1rem;
+      box-shadow: 0 2px 12px rgba(33,150,243,0.09);
+      display: block;
+    }
+    .instruction {
+      font-size: 0.98rem;
+      margin: 0.5rem 0 1.2rem 0;
+      color: #222d;
+    }
+    @media (max-width: 500px) {
+      .container {
+        padding: 1.2rem .5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Your Rescue Photo</h2>
+    <p>To add a dog or cat to the rescue map,<br>upload a photo here, copy the link,<br>and paste it in the Google Form.<br><span style="color:#1565c0;font-weight:500">Easy, fast & public!</span></p>
+    <button id="upload_widget">Upload Photo</button>
+    <div id="result"></div>
+  </div>
+
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+  <script>
+    var myWidget = cloudinary.createUploadWidget({
+      cloudName: 'dmlxhooho',      // << à remplacer
+      uploadPreset: 'pacs-map' // << à remplacer
+    }, (error, result) => {
+      if (!error && result && result.event === "success") {
+        const url = result.info.secure_url;
+        document.getElementById('result').innerHTML =
+        `<div class="success-preview">
+            <img src="${url}" alt="Preview" />
+            <div class="url-box">
+              <input type="text" value="${url}" readonly id="photoUrl">
+              <button onclick="navigator.clipboard.writeText('${url}')">Copy</button>
+            </div>
+            <div class="instruction">Copy the link above and paste it in the<br><b>Google Form</b> or WhatsApp info.</div>
+        </div>`;
+      }
+    });
+    document.getElementById("upload_widget").addEventListener("click", function(){
+        myWidget.open();
+    }, false);
+  </script>
+</body>
+</html>
