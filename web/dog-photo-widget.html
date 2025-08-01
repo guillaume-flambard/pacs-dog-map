@@ -5,6 +5,8 @@
   <title>Rescue Photo Upload</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       background: linear-gradient(135deg, #e8eaf6 0%, #bbdefb 100%);
@@ -14,6 +16,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    body.thai {
+      font-family: 'Noto Sans Thai', 'Inter', Arial, sans-serif;
+    }
+    body.burmese {
+      font-family: 'Noto Sans Myanmar', 'Inter', Arial, sans-serif;
     }
     .container {
       background: #fff;
@@ -80,26 +88,136 @@
       margin: 0.5rem 0 1.2rem 0;
       color: #222d;
     }
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 6px 12px;
+      border: 1px solid #90caf9;
+      background: rgba(255,255,255,0.9);
+      border-radius: 1rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .lang-btn:hover, .lang-btn.active {
+      background: #2196f3;
+      color: white;
+    }
+    .copy-btn {
+      transition: all 0.3s ease;
+    }
+    .copy-btn.copied {
+      background: #4caf50 !important;
+      transform: scale(0.95);
+    }
+    .hidden {
+      display: none;
+    }
     @media (max-width: 500px) {
       .container {
         padding: 1.2rem .5rem;
+      }
+      .language-selector {
+        position: relative;
+        top: auto;
+        right: auto;
+        justify-content: center;
+        margin-bottom: 1rem;
       }
     }
   </style>
 </head>
 <body>
+  <div class="language-selector">
+    <div class="lang-btn active" onclick="switchLanguage('en')">EN</div>
+    <div class="lang-btn" onclick="switchLanguage('th')">ไทย</div>
+    <div class="lang-btn" onclick="switchLanguage('my')">မြန်မာ</div>
+  </div>
+  
   <div class="container">
-    <h2>Upload Your Rescue Photo</h2>
-    <p>To add a dog or cat to the rescue map,<br>upload a photo here, copy the link,<br>and paste it in the Google Form.<br><span style="color:#1565c0;font-weight:500">Easy, fast & public!</span></p>
-    <button id="upload_widget">Upload Photo</button>
+    <!-- English Content -->
+    <div id="content-en">
+      <h2>Upload Your Rescue Photo</h2>
+      <p>To add a dog or cat to the rescue map,<br>upload a photo here, copy the link,<br>and paste it in the Google Form.<br><span style="color:#1565c0;font-weight:500">Easy, fast & public!</span></p>
+      <button id="upload_widget_en">Upload Photo</button>
+    </div>
+    
+    <!-- Thai Content -->
+    <div id="content-th" class="hidden">
+      <h2>อัปโหลดรูปภาพสัตว์ที่ช่วยเหลือ</h2>
+      <p>เพื่อเพิ่มสุนัขหรือแมวในแผนที่ช่วยเหลือ<br>อัปโหลดรูปภาพที่นี่ คัดลอกลิงก์<br>และนำไปวางในแบบฟอร์ม Google<br><span style="color:#1565c0;font-weight:500">ง่าย รวดเร็ว และเปิดให้ทุกคน!</span></p>
+      <button id="upload_widget_th">อัปโหลดรูปภาพ</button>
+    </div>
+    
+    <!-- Burmese Content -->
+    <div id="content-my" class="hidden">
+      <h2>ကယ်တင်ရေးဓာတ်ပုံ တင်ပါ</h2>
+      <p>ကူညီရေးမြေပုံထဲသို့ ခွေးသို့မဟုတ် ကြောင်းထည့်ရန်<br>ဤနေရာတွင် ဓာတ်ပုံတင်ပါ၊ လင့်ခ်ကူးပါ<br>Google ဖောင်တွင် ကပ်ပါ<br><span style="color:#1565c0;font-weight:500">လွယ်ကူ၊ မြန်ဆန်၊ လူအများ သုံးနိုင်!</span></p>
+      <button id="upload_widget_my">ဓာတ်ပုံတင်ပါ</button>
+    </div>
+    
     <div id="result"></div>
   </div>
 
   <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
   <script>
+    let currentLang = 'en';
+    
+    const translations = {
+      en: {
+        copy: 'Copy',
+        copied: 'Copied!',
+        instruction: 'Copy the link above and paste it in the<br><b>Google Form</b> or WhatsApp info.'
+      },
+      th: {
+        copy: 'คัดลอก',
+        copied: 'คัดลอกแล้ว!',
+        instruction: 'คัดลอกลิงก์ข้างบนแล้วนำไปวางใน<br><b>แบบฟอร์ม Google</b> หรือข้อมูล WhatsApp'
+      },
+      my: {
+        copy: 'ကူးပါ',
+        copied: 'ကူးပြီး!',
+        instruction: 'အထက်က လင့်ခ်ကို ကူးပြီး<br><b>Google ဖောင်</b> သို့မဟုတ် WhatsApp တွင် ကပ်ပါ'
+      }
+    };
+
+    function switchLanguage(lang) {
+      // Hide all content divs
+      document.querySelectorAll('[id^="content-"]').forEach(div => div.classList.add('hidden'));
+      // Show selected language content
+      document.getElementById(`content-${lang}`).classList.remove('hidden');
+      
+      // Update language buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Update body class for font
+      document.body.className = lang === 'en' ? '' : lang === 'th' ? 'thai' : 'burmese';
+      
+      currentLang = lang;
+    }
+
+    function copyToClipboard(url, buttonElement) {
+      navigator.clipboard.writeText(url).then(() => {
+        const originalText = buttonElement.textContent;
+        buttonElement.textContent = translations[currentLang].copied;
+        buttonElement.classList.add('copied');
+        
+        setTimeout(() => {
+          buttonElement.textContent = translations[currentLang].copy;
+          buttonElement.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
     var myWidget = cloudinary.createUploadWidget({
-      cloudName: 'dmlxhooho',      // << à remplacer
-      uploadPreset: 'pacs-map' // << à remplacer
+      cloudName: 'dmlxhooho',
+      uploadPreset: 'pacs-map'
     }, (error, result) => {
       if (!error && result && result.event === "success") {
         const url = result.info.secure_url;
@@ -108,15 +226,19 @@
             <img src="${url}" alt="Preview" />
             <div class="url-box">
               <input type="text" value="${url}" readonly id="photoUrl">
-              <button onclick="navigator.clipboard.writeText('${url}')">Copy</button>
+              <button class="copy-btn" onclick="copyToClipboard('${url}', this)">${translations[currentLang].copy}</button>
             </div>
-            <div class="instruction">Copy the link above and paste it in the<br><b>Google Form</b> or WhatsApp info.</div>
+            <div class="instruction">${translations[currentLang].instruction}</div>
         </div>`;
       }
     });
-    document.getElementById("upload_widget").addEventListener("click", function(){
+    
+    // Add event listeners for all upload buttons
+    ['en', 'th', 'my'].forEach(lang => {
+      document.getElementById(`upload_widget_${lang}`).addEventListener("click", function(){
         myWidget.open();
-    }, false);
+      }, false);
+    });
   </script>
 </body>
 </html>

@@ -230,9 +230,9 @@ class PacsMapGenerator:
         # Add link to full resolution photo if available
         if pd.notna(photo_url) and photo_url != '' and 'cloudinary.com' in photo_url:
             full_res_url = photo_link if photo_link and photo_link != photo_url else photo_url
-            photo_html = f"""<div style='margin-top: 8px;'>
-                <a href='{full_res_url}' target='_blank' style='background-color:#FF6B6B;color:white;padding:4px 8px;text-decoration:none;border-radius:3px;font-size:11px;'>
-                    📷 View Full Photo
+            photo_html = f"""<div style='margin-top: 6px;'>
+                <a href='{full_res_url}' target='_blank' style='display:inline-flex;align-items:center;background-color:#FF6B6B;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>
+                    📷 <span style='margin-left:2px;'>Photo</span>
                 </a>
             </div>"""
         
@@ -254,8 +254,8 @@ class PacsMapGenerator:
             
             {photo_html}
             
-            <div style='margin-top: 10px;'>
-                <a href="{row['Location Link']}" target="_blank" style='background-color:#4285F4;color:white;padding:5px 10px;text-decoration:none;border-radius:3px;font-size:12px;'>📍 View on Google Maps</a>
+            <div style='margin-top: 8px;'>
+                <a href="{row['Location Link']}" target="_blank" style='display:inline-flex;align-items:center;background-color:#4285F4;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>📍 <span style='margin-left:2px;'>Map</span></a>
             </div>
             
             <div style='margin-top: 8px; font-size: 11px; color: #666;'>

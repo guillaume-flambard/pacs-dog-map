@@ -114,7 +114,8 @@ class DataManager:
         is_form_data = (
             len(df.columns) > 10 and  # Form has many columns
             ('Horodateur' in df.columns or 'Timestamp' in df.columns or  # Has timestamp
-             any('type of help' in str(col).lower() for col in df.columns))  # Or has form-like questions
+             any('type of help' in str(col).lower() for col in df.columns) or  # Or has form-like questions
+             'Language' in df.columns and 'Animal' in df.columns)  # Or has key form fields
         )
         
         if is_form_data:
@@ -139,23 +140,40 @@ class DataManager:
             df['Contact Phone #'] = df['Contact Phone #'].astype(str).replace('nan', '')
         
         # Only keep animals with location info (Area or Link)
-        df_clean = df.dropna(subset=['Location (Area)'], how='all')
+        # Check if column exists first, otherwise skip this filter
+        if 'Location (Area)' in df.columns:
+            df_clean = df.dropna(subset=['Location (Area)'], how='all')
+        else:
+            df_clean = df.copy()
         
         # Remove test/invalid data rows - handle NaN values safely
-        df_clean = df_clean[
-            (df_clean['Dog/Cat'].fillna('').str.lower().isin(['dog', 'cat'])) &
-            (df_clean['Location (Area)'].fillna('') != 'Burmese') &
-            (df_clean['Language'].fillna('') != 'Burmese') &
-            (df_clean['Location (Area)'].fillna('').str.len() > 2) &  # Minimum location name
-            (df_clean['Contact Name'].fillna('').str.len() > 1)       # Minimum contact name
-        ]
+        # Only apply filters if columns exist
+        filters = []
+        if 'Dog/Cat' in df_clean.columns:
+            filters.append(df_clean['Dog/Cat'].fillna('').str.lower().isin(['dog', 'cat']))
+        if 'Location (Area)' in df_clean.columns:
+            filters.append(df_clean['Location (Area)'].fillna('') != 'Burmese')
+            filters.append(df_clean['Location (Area)'].fillna('').str.len() > 2)  # Minimum location name
+        if 'Language' in df_clean.columns:
+            filters.append(df_clean['Language'].fillna('') != 'Burmese')
+        if 'Contact Name' in df_clean.columns:
+            filters.append(df_clean['Contact Name'].fillna('').str.len() > 1)  # Minimum contact name
+        
+        # Apply all valid filters
+        if filters:
+            combined_filter = filters[0]
+            for f in filters[1:]:
+                combined_filter = combined_filter & f
+            df_clean = df_clean[combined_filter]
         
         # Don't add Priority_Score - not in original sheets
         
         print(f"📊 Data cleaning summary:")
         print(f"   - Total animals: {len(df_clean)}")
-        print(f"   - Pregnant animals: {(df_clean['Pregnant?'] == 'Yes').sum()}")
-        print(f"   - Animals with location links: {df_clean['Location Link'].notna().sum()}")
+        if 'Pregnant?' in df_clean.columns:
+            print(f"   - Pregnant animals: {(df_clean['Pregnant?'] == 'Yes').sum()}")
+        if 'Location Link' in df_clean.columns:
+            print(f"   - Animals with location links: {df_clean['Location Link'].notna().sum()}")
         
         return df_clean
     
@@ -167,10 +185,10 @@ class DataManager:
         standard_df = pd.DataFrame()
         
         # Column mapping by position (robust to name changes)
-        # NEW SIMPLIFIED STRUCTURE:
+        # CURRENT STRUCTURE (based on actual data):
         # 0: Timestamp, 1: Language, 2: Procedure, 3: Animal, 4: Sex, 
-        # 5: Pregnant, 6: Age, 7: Temperament, 8: Tattoo, 9: Photo,
-        # 10: Google maps link, 11: Location, 12: Extra info, 13: Name, 14: Phone
+        # 5: Pregnant, 6: Age, 7: Temperament, 8: Tattoo, 9: Photo, 10: Preview,
+        # 11: Google maps link, 12: Location, 13: Extra info, 14: Name, 15: Phone
         
         cols = df.columns.tolist()
         
@@ -193,41 +211,41 @@ class DataManager:
         # Sex: Position 4
         standard_df['Sex'] = df.iloc[:, 4] if len(cols) > 4 else ''
         
-        # Pregnant: Not in new form structure, set to No
-        standard_df['Pregnant?'] = 'No'
+        # Pregnant: Position 5
+        standard_df['Pregnant?'] = df.iloc[:, 5] if len(cols) > 5 else ''
         
-        # Age: Position 5
-        standard_df['Age'] = df.iloc[:, 5] if len(cols) > 5 else ''
+        # Age: Position 6
+        standard_df['Age'] = df.iloc[:, 6] if len(cols) > 6 else ''
         
-        # Temperament: Position 6
-        standard_df['Temperament'] = df.iloc[:, 6] if len(cols) > 6 else ''
+        # Temperament: Position 7
+        standard_df['Temperament'] = df.iloc[:, 7] if len(cols) > 7 else ''
         
-        # Tattoo: Position 7 - New field!
-        standard_df['Tattoo'] = df.iloc[:, 7] if len(cols) > 7 else ''
+        # Tattoo: Position 8 - New field!
+        standard_df['Tattoo'] = df.iloc[:, 8] if len(cols) > 8 else ''
         
-        # Photo: Position 8 (main photo)
-        standard_df['Photo'] = df.iloc[:, 8] if len(cols) > 8 else ''
+        # Photo: Position 9 (main photo)
+        standard_df['Photo'] = df.iloc[:, 9] if len(cols) > 9 else ''
         
-        # Location fields: Positions 10, 11, 12
-        standard_df['Location Link'] = df.iloc[:, 10] if len(cols) > 10 else ''  # Google maps link
-        standard_df['Location (Area)'] = df.iloc[:, 11] if len(cols) > 11 else ''  # Location dropdown
-        standard_df['Location Details '] = df.iloc[:, 12] if len(cols) > 12 else ''  # Extra info text
+        # Location fields: Positions 11, 12, 13
+        standard_df['Location Link'] = df.iloc[:, 11] if len(cols) > 11 else ''  # Google maps link
+        standard_df['Location (Area)'] = df.iloc[:, 12] if len(cols) > 12 else ''  # Location dropdown
+        standard_df['Location Details '] = df.iloc[:, 13] if len(cols) > 13 else ''  # Extra info text
         
-        # Contact info: Positions 13, 14
-        standard_df['Contact Name'] = df.iloc[:, 13] if len(cols) > 13 else ''
-        standard_df['Contact Phone #'] = df.iloc[:, 14] if len(cols) > 14 else ''
+        # Contact info: Positions 14, 15
+        standard_df['Contact Name'] = df.iloc[:, 14] if len(cols) > 14 else ''
+        standard_df['Contact Phone #'] = df.iloc[:, 15] if len(cols) > 15 else ''
         
         # Add missing columns
         standard_df['Unshortened Link'] = ''
         standard_df['Latitude'] = ''
         standard_df['Longitude'] = ''
         
-        # Photo handling: Use Preview (position 9) if available, otherwise Photo (position 8)
-        # Priority: Preview (9) > Photo (8)
-        if len(cols) > 9 and df.iloc[:, 9].notna().any():
-            standard_df['Photo_Link'] = df.iloc[:, 9]  # Preview
+        # Photo handling: Use Preview (position 10) if available, otherwise Photo (position 9)
+        # Priority: Preview (10) > Photo (9)
+        if len(cols) > 10 and df.iloc[:, 10].notna().any():
+            standard_df['Photo_Link'] = df.iloc[:, 10]  # Preview
         else:
-            standard_df['Photo_Link'] = df.iloc[:, 8] if len(cols) > 8 else ''  # Photo as fallback
+            standard_df['Photo_Link'] = df.iloc[:, 9] if len(cols) > 9 else ''  # Photo as fallback
         
         print(f"✅ Converted {len(standard_df)} form responses to standard format")
         return standard_df
