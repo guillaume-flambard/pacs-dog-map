@@ -3,7 +3,7 @@ import folium
 from folium.plugins import MarkerCluster
 
 # === 1. Load the CSV file ===
-df = pd.read_csv("PACS_Test_1_List_v2.csv")
+df = pd.read_csv("data/data_from_sheets.csv")
 
 # Clean and filter valid coordinates
 df['Latitude'] = pd.to_numeric(df['Latitude'], errors='coerce')

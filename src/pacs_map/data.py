@@ -211,6 +211,8 @@ class DataManager:
             standard_df['Photo'] = df.get('Preview', '')  # Direct Cloudinary preview URL
         elif 'Your photo' in df.columns:
             standard_df['Photo'] = df.get('Your photo', '')  # New photo column
+        elif 'lien' in df.columns:
+            standard_df['Photo'] = df.get('lien', '')  # Cloudinary direct link
         elif 'Upload photos of the animal(s)' in df.columns:
             standard_df['Photo'] = df.get('Upload photos of the animal(s)', '')  # Old Google Drive
         else:
@@ -224,6 +226,10 @@ class DataManager:
         # Add full Cloudinary link if available (use 'Your photo' as full resolution link)
         if 'Your photo' in df.columns:
             standard_df['Photo_Link'] = df.get('Your photo', '')  # Full Cloudinary URL
+        elif 'lien' in df.columns:
+            standard_df['Photo_Link'] = df.get('lien', '')  # Cloudinary direct link
+        elif 'preview' in df.columns:
+            standard_df['Photo_Link'] = df.get('preview', '')  # Preview link
         else:
             standard_df['Photo_Link'] = ''
         

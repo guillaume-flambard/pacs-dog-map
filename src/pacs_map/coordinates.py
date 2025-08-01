@@ -24,17 +24,15 @@ class CoordinateExtractor:
             except:
                 pass  # Continue with original URL if resolving fails
         
-        # Pattern 1: @lat,lng format (most common)
+        # Pattern 1: 3d/4d coordinates in data parameter (most precise location)
+        coords_3d = re.findall(r'[34]d(-?\d+\.?\d*)', url)
+        if len(coords_3d) >= 2:
+            return float(coords_3d[0]), float(coords_3d[1])
+        
+        # Pattern 2: @lat,lng format (fallback, sometimes less precise)
         match = re.search(r'@(-?\d+\.?\d*),(-?\d+\.?\d*)', url)
         if match:
             return float(match.group(1)), float(match.group(2))
-        
-        # Pattern 2: 3d coordinates in data parameter
-        match = re.search(r'3d(-?\d+\.?\d*)', url)
-        if match:
-            coords = re.findall(r'3d(-?\d+\.?\d*)', url)
-            if len(coords) >= 2:
-                return float(coords[0]), float(coords[1])
         
         # Pattern 3: search/lat,lng format (with optional + and spaces)
         match = re.search(r'search/(-?\d+\.?\d*),\s*\+?(-?\d+\.?\d*)', url)
