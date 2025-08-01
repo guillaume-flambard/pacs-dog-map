@@ -110,8 +110,14 @@ class DataManager:
         # Create a copy to avoid warnings
         df = df.copy()
         
-        # Check if this is form responses data and map columns
-        if 'Horodateur' in df.columns or 'What type of help does this animal need?' in df.columns:
+        # Check if this is form responses data by structure (timestamp + many columns)
+        is_form_data = (
+            len(df.columns) > 10 and  # Form has many columns
+            ('Horodateur' in df.columns or 'Timestamp' in df.columns or  # Has timestamp
+             any('type of help' in str(col).lower() for col in df.columns))  # Or has form-like questions
+        )
+        
+        if is_form_data:
             df = self._map_form_responses_to_standard_format(df)
         
         # Clean coordinates and other problematic values
@@ -154,67 +160,78 @@ class DataManager:
         return df_clean
     
     def _map_form_responses_to_standard_format(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Map form response columns to standard format"""
+        """Map form response columns to standard format using column positions"""
         print("🔄 Converting form responses to standard format...")
         
         # Create new dataframe with standard column names
         standard_df = pd.DataFrame()
         
-        # Map each column from form format to standard format with encoding fixes
-        standard_df['Language'] = df.get('Language', '').apply(self._fix_language_encoding)
+        # Column mapping by position (robust to name changes)
+        # Position mapping based on Google Form structure:
+        # 0: Timestamp, 1: Language, 2: Help type, 3: Animal type, 4: Count, 
+        # 5: Gender, 6: Pregnant, 7: Age, 8: Temperament, 9: Area, 
+        # 10: Details, 11: Maps Link, 12: Name, 13: Phone, 14: Upload photo, 15: Your photo, 16: Preview
         
-        # Pop-Up Info: "Medical attention / Ask for information" -> "Ask for Info"
-        standard_df['Pop-Up Info'] = df.get('What type of help does this animal need?', '').apply(
+        cols = df.columns.tolist()
+        
+        # Map each column using position instead of name
+        standard_df['Language'] = df.iloc[:, 1].apply(self._fix_language_encoding) if len(cols) > 1 else ''
+        
+        # Pop-Up Info: Position 2 - Help type
+        standard_df['Pop-Up Info'] = (df.iloc[:, 2] if len(cols) > 2 else pd.Series(dtype='object')).apply(
             lambda x: 'Ask for Info' if 'Medical attention' in str(x) else 'Spay/Neuter' if 'Spay/Neuter' in str(x) else str(x) if pd.notna(x) else ''
         )
         
-        # Dog/Cat: "Dog 🐕" -> "Dog"
-        standard_df['Dog/Cat'] = df.get('What type of animal is this?', '').apply(
+        # Dog/Cat: Position 3 - Animal type
+        standard_df['Dog/Cat'] = (df.iloc[:, 3] if len(cols) > 3 else pd.Series(dtype='object')).apply(
             lambda x: 'Dog' if 'Dog' in str(x) else 'Cat' if 'Cat' in str(x) else str(x) if pd.notna(x) else ''
         )
         
-        standard_df['No. of Animals'] = df.get('How many animals are at this location?', '')
+        # Count: Position 4
+        standard_df['No. of Animals'] = df.iloc[:, 4] if len(cols) > 4 else ''
         
-        # Sex: "Both male and female (mixed group)" -> "Both"
-        standard_df['Sex'] = df.get('What is the gender of the animal(s)?', '').apply(
+        # Sex: Position 5 - Gender
+        standard_df['Sex'] = (df.iloc[:, 5] if len(cols) > 5 else pd.Series(dtype='object')).apply(
             lambda x: 'Both' if 'Both' in str(x) or 'mixed' in str(x) else 'Male' if 'Male only' in str(x) else 'Female' if 'Female only' in str(x) else str(x) if pd.notna(x) else ''
         )
         
-        # Pregnant: "No - Not pregnant" -> "No"
-        standard_df['Pregnant?'] = df.get('Are any of the animals pregnant?', '').apply(
+        # Pregnant: Position 6
+        standard_df['Pregnant?'] = (df.iloc[:, 6] if len(cols) > 6 else pd.Series(dtype='object')).apply(
             lambda x: 'Yes' if 'Yes' in str(x) else 'No'
         )
         
-        # Age: "Young puppies/kittens (under 6 months)" -> "Puppy (>6mnth)"
-        standard_df['Age'] = df.get('How old do the animals appear to be?', '').apply(
+        # Age: Position 7
+        standard_df['Age'] = (df.iloc[:, 7] if len(cols) > 7 else pd.Series(dtype='object')).apply(
             lambda x: 'Puppy (>6mnth)' if 'puppies' in str(x) or 'kittens' in str(x) or 'under 6' in str(x) 
                      else 'Teenager (6mnth - 1yr)' if 'Teenagers' in str(x) or '6 months to 1 year' in str(x)
                      else 'Adult' if 'Adult' in str(x) 
                      else str(x) if pd.notna(x) else ''
         )
         
-        # Temperament: "Mixed behavior" -> "Wild"
-        standard_df['Temperament'] = df.get('How do the animals behave around people?', '').apply(
+        # Temperament: Position 8
+        standard_df['Temperament'] = (df.iloc[:, 8] if len(cols) > 8 else pd.Series(dtype='object')).apply(
             lambda x: 'Friendly' if 'Friendly' in str(x) or 'approaches people' in str(x)
                      else 'Wild' if any(word in str(x) for word in ['Wild', 'Scared', 'runs away', 'Mixed', 'behavior'])
                      else str(x) if pd.notna(x) else ''
         )
         
-        standard_df['Location (Area)'] = df.get('Where did you see these animals?', '')
-        standard_df['Location Link'] = df.get('Share the Google Maps location', '')
-        standard_df['Location Details '] = df.get('Describe the exact location', '')  # Note trailing space
-        standard_df['Contact Name'] = df.get('Your name', '')
-        standard_df['Contact Phone #'] = df.get('Your phone number', '')
+        # Location fields: Positions 9, 10, 11
+        standard_df['Location (Area)'] = df.iloc[:, 9] if len(cols) > 9 else ''
+        standard_df['Location Details '] = df.iloc[:, 10] if len(cols) > 10 else ''  # Note trailing space
+        standard_df['Location Link'] = df.iloc[:, 11] if len(cols) > 11 else ''
         
-        # Handle photos - prioritize Cloudinary columns
-        if 'Preview' in df.columns:
-            standard_df['Photo'] = df.get('Preview', '')  # Direct Cloudinary preview URL
-        elif 'Your photo' in df.columns:
-            standard_df['Photo'] = df.get('Your photo', '')  # New photo column
-        elif 'lien' in df.columns:
-            standard_df['Photo'] = df.get('lien', '')  # Cloudinary direct link
-        elif 'Upload photos of the animal(s)' in df.columns:
-            standard_df['Photo'] = df.get('Upload photos of the animal(s)', '')  # Old Google Drive
+        # Contact info: Positions 12, 13
+        standard_df['Contact Name'] = df.iloc[:, 12] if len(cols) > 12 else ''
+        standard_df['Contact Phone #'] = df.iloc[:, 13] if len(cols) > 13 else ''
+        
+        # Handle photos by position: 14=Upload, 15=Your photo, 16=Preview
+        # Prioritize Cloudinary preview (16) > Your photo (15) > Upload (14)
+        if len(cols) > 16 and pd.notna(df.iloc[:, 16]).any():
+            standard_df['Photo'] = df.iloc[:, 16]  # Preview (Cloudinary)
+        elif len(cols) > 15 and pd.notna(df.iloc[:, 15]).any():
+            standard_df['Photo'] = df.iloc[:, 15]  # Your photo (Cloudinary)
+        elif len(cols) > 14:
+            standard_df['Photo'] = df.iloc[:, 14]  # Upload photos (Google Drive)
         else:
             standard_df['Photo'] = ''
         
@@ -223,13 +240,11 @@ class DataManager:
         standard_df['Latitude'] = ''
         standard_df['Longitude'] = ''
         
-        # Add full Cloudinary link if available (use 'Your photo' as full resolution link)
-        if 'Your photo' in df.columns:
-            standard_df['Photo_Link'] = df.get('Your photo', '')  # Full Cloudinary URL
-        elif 'lien' in df.columns:
-            standard_df['Photo_Link'] = df.get('lien', '')  # Cloudinary direct link
-        elif 'preview' in df.columns:
-            standard_df['Photo_Link'] = df.get('preview', '')  # Preview link
+        # Add full resolution photo link (use 'Your photo' position 15 as full resolution)
+        if len(cols) > 15:
+            standard_df['Photo_Link'] = df.iloc[:, 15]  # Your photo (Cloudinary full res)
+        elif len(cols) > 16:
+            standard_df['Photo_Link'] = df.iloc[:, 16]  # Preview as fallback
         else:
             standard_df['Photo_Link'] = ''
         

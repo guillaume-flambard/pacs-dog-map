@@ -81,32 +81,105 @@ class PacsMapGenerator:
         return m
     
     def _add_markers(self, m: folium.Map, df: pd.DataFrame):
-        """Add animal markers to the map"""
+        """Add animal markers to the map with photo avatars"""
         # Create a simple marker cluster for all animals
         from folium.plugins import MarkerCluster
         marker_cluster = MarkerCluster(name="All Animals").add_to(m)
         
         # Add all markers to the cluster
         for _, row in df.iterrows():
-            color = self._get_marker_color(row)
-            icon = self._get_marker_icon(row)
             popup_html = self._create_popup_html(row)
             
-            # Create marker
-            marker = folium.Marker(
-                location=[row['Latitude'], row['Longitude']],
-                popup=folium.Popup(popup_html, max_width=350),
-                icon=folium.Icon(
-                    color=color,
-                    icon=icon.replace('fa-', ''),
-                    prefix='fa'
+            # Check if animal has a photo for avatar
+            photo_url = self._get_photo_url(row)
+            
+            if photo_url and 'cloudinary.com' in photo_url:
+                # Use photo as custom marker icon
+                marker = self._create_photo_marker(row, photo_url, popup_html)
+            else:
+                # Fallback to standard icon markers
+                color = self._get_marker_color(row)
+                icon = self._get_marker_icon(row)
+                marker = folium.Marker(
+                    location=[row['Latitude'], row['Longitude']],
+                    popup=folium.Popup(popup_html, max_width=350),
+                    icon=folium.Icon(
+                        color=color,
+                        icon=icon.replace('fa-', ''),
+                        prefix='fa'
+                    )
                 )
-            )
             
             # Add marker to cluster
             marker.add_to(marker_cluster)
         
         return marker_cluster
+    
+    def _get_photo_url(self, row: pd.Series) -> str:
+        """Get photo URL for the animal"""
+        photo_url = row.get('Photo', '')
+        photo_link = row.get('Photo_Link', '')
+        
+        # Use Photo_Link if Photo is empty but Photo_Link has content
+        if (not photo_url or pd.isna(photo_url) or photo_url == '') and photo_link and not pd.isna(photo_link):
+            photo_url = photo_link
+        
+        return photo_url if pd.notna(photo_url) else ''
+    
+    def _create_photo_marker(self, row: pd.Series, photo_url: str, popup_html: str):
+        """Create a custom marker with animal photo as avatar"""
+        # Determine border color based on priority
+        border_color = '#FF0000' if row.get('Pregnant?', '').lower() == 'yes' else '#4285F4' 
+        border_width = 3 if row.get('Pregnant?', '').lower() == 'yes' else 2
+        
+        # Determine shape based on animal type
+        is_cat = row.get('Dog/Cat', '').lower() == 'cat'
+        
+        # Create custom DivIcon with photo
+        icon_html = f"""
+        <div style="
+            width: 50px; 
+            height: 50px; 
+            border-radius: {'25px' if is_cat else '10px'}; 
+            border: {border_width}px solid {border_color}; 
+            background-image: url('{photo_url}'); 
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            position: relative;
+        ">
+            <div style="
+                position: absolute;
+                bottom: -2px;
+                right: -2px;
+                width: 16px;
+                height: 16px;
+                background: {'#FF6B6B' if is_cat else '#4ECDC4'};
+                border-radius: 50%;
+                border: 2px solid white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 10px;
+            ">
+                {'🐱' if is_cat else '🐶'}
+            </div>
+        </div>
+        """
+        
+        # Create marker with custom icon
+        marker = folium.Marker(
+            location=[row['Latitude'], row['Longitude']],
+            popup=folium.Popup(popup_html, max_width=350),
+            icon=folium.DivIcon(
+                html=icon_html,
+                icon_size=(50, 50),
+                icon_anchor=(25, 50)
+            )
+        )
+        
+        return marker
     
     def _get_marker_color(self, row: pd.Series) -> str:
         """Determine marker color based on animal properties"""
@@ -145,7 +218,7 @@ class PacsMapGenerator:
             action_color = 'red' if 'spay' in row['Pop-Up Info'].lower() else 'blue'
             action_info = f"<span style='background-color:{action_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>{row['Pop-Up Info']}</span>"
         
-        # Handle photos - Cloudinary URLs work directly, Google Drive needs conversion
+        # Photo is now displayed as marker avatar, add link to full resolution if available
         photo_html = ""
         photo_url = row.get('Photo', '')
         photo_link = row.get('Photo_Link', '')
@@ -154,31 +227,14 @@ class PacsMapGenerator:
         if (not photo_url or pd.isna(photo_url) or photo_url == '') and photo_link and not pd.isna(photo_link):
             photo_url = photo_link
         
-        if pd.notna(photo_url) and photo_url != '':
-            
-            # Check if it's a Cloudinary URL (works directly) or Google Drive (needs conversion)
-            if 'cloudinary.com' in photo_url:
-                # Cloudinary URLs work directly - no conversion needed
-                if photo_link:
-                    photo_html = f"""<br>
-                    <a href='{photo_link}' target='_blank'>
-                        <img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;cursor:pointer;' 
-                             title='Click to view full size'>
-                    </a><br>"""
-                else:
-                    photo_html = f"<br><img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;'><br>"
-            else:
-                # Google Drive or other - use conversion with fallback
-                converted_url = self._convert_google_drive_url(photo_url)
-                if converted_url:
-                    photo_html = f"""<br>
-                    <img src='{converted_url}' style='max-width:200px;max-height:150px;border-radius:5px;' 
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div style='display:none; padding:10px; background:#f0f0f0; border-radius:5px; text-align:center;'>
-                        <a href='{photo_url}' target='_blank' style='color:#4285F4; text-decoration:none;'>
-                            📷 View Photo (Click to open)
-                        </a>
-                    </div><br>"""
+        # Add link to full resolution photo if available
+        if pd.notna(photo_url) and photo_url != '' and 'cloudinary.com' in photo_url:
+            full_res_url = photo_link if photo_link and photo_link != photo_url else photo_url
+            photo_html = f"""<div style='margin-top: 8px;'>
+                <a href='{full_res_url}' target='_blank' style='background-color:#FF6B6B;color:white;padding:4px 8px;text-decoration:none;border-radius:3px;font-size:11px;'>
+                    📷 View Full Photo
+                </a>
+            </div>"""
         
         # No status badge - not in original sheets
         
