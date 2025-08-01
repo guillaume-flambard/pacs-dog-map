@@ -332,7 +332,7 @@ class PacsMapGenerator:
         """Add legend to the map"""
         legend_html = '''
         <div style="position: fixed; 
-                    bottom: 20px; left: 20px; width: 220px; height: auto; 
+                    bottom: 20px; left: 20px; width: min(220px, calc(50vw - 30px)); height: auto; 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:13px; padding: 12px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                     
@@ -349,7 +349,7 @@ class PacsMapGenerator:
         """Add statistics panel to the map"""
         stats_html = f'''
         <div style="position: fixed; 
-                    top: 10px; right: 10px; width: 250px; 
+                    top: 10px; right: 10px; width: min(250px, calc(50vw - 30px)); 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:14px; padding: 15px; border-radius: 5px;">
                     

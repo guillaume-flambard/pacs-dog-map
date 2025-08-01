@@ -17,7 +17,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_a42065e0063173bb755846e45df4a744 {
+                #map_fd428f70f089532769840853bb5ff572 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -58,7 +58,7 @@
     
     
         <div style="position: fixed; 
-                    bottom: 20px; left: 20px; width: 220px; height: auto; 
+                    bottom: 20px; left: 20px; width: min(220px, calc(50vw - 30px)); height: auto; 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:13px; padding: 12px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                     
@@ -71,7 +71,7 @@
         
     
         <div style="position: fixed; 
-                    top: 10px; right: 10px; width: 250px; 
+                    top: 10px; right: 10px; width: min(250px, calc(50vw - 30px)); 
                     background-color: white; border:2px solid grey; z-index:9999; 
                     font-size:14px; padding: 15px; border-radius: 5px;">
                     
@@ -91,14 +91,14 @@
         </script>
         
     
-            <div class="folium-map" id="map_a42065e0063173bb755846e45df4a744" ></div>
+            <div class="folium-map" id="map_fd428f70f089532769840853bb5ff572" ></div>
         
 </body>
 <script>
     
     
-            var map_a42065e0063173bb755846e45df4a744 = L.map(
-                "map_a42065e0063173bb755846e45df4a744",
+            var map_fd428f70f089532769840853bb5ff572 = L.map(
+                "map_fd428f70f089532769840853bb5ff572",
                 {
                     center: [9.731, 99.99],
                     crs: L.CRS.EPSG3857,
@@ -115,7 +115,7 @@
 
         
     
-            var tile_layer_eabb24b2c4d7be046d13b6ac8bb6a4a1 = L.tileLayer(
+            var tile_layer_855b8f6af8ceae51640d0dc845e34557 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -132,10 +132,10 @@
             );
         
     
-            tile_layer_eabb24b2c4d7be046d13b6ac8bb6a4a1.addTo(map_a42065e0063173bb755846e45df4a744);
+            tile_layer_855b8f6af8ceae51640d0dc845e34557.addTo(map_fd428f70f089532769840853bb5ff572);
         
     
-            var tile_layer_62b5561f9fe6311b4b3f2b455b14ab7c = L.tileLayer(
+            var tile_layer_52c24aa83032978ac64c71e3fab9ec57 = L.tileLayer(
                 "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
   "minZoom": 0,
@@ -152,23 +152,23 @@
             );
         
     
-            tile_layer_62b5561f9fe6311b4b3f2b455b14ab7c.addTo(map_a42065e0063173bb755846e45df4a744);
+            tile_layer_52c24aa83032978ac64c71e3fab9ec57.addTo(map_fd428f70f089532769840853bb5ff572);
         
     
-            var marker_cluster_0b5b06c6ac276ba8b385f6eb07e62d5e = L.markerClusterGroup(
+            var marker_cluster_4f0f764430b6d052259c53e367f69822 = L.markerClusterGroup(
                 {
 }
             );
         
     
-            var marker_eb012543683ead696542feb47b674d7e = L.marker(
+            var marker_5a91a6f759e9bfac55fa00b960f8d3ee = L.marker(
                 [9.6750296, 100.0633279],
                 {
 }
-            ).addTo(marker_cluster_0b5b06c6ac276ba8b385f6eb07e62d5e);
+            ).addTo(marker_cluster_4f0f764430b6d052259c53e367f69822);
         
     
-            var div_icon_8a15320cf521bac7269a15ddd90f8809 = L.divIcon({
+            var div_icon_41a5ab388a490088c0f6c00102243ac5 = L.divIcon({
   "html": "\n        \u003cdiv style=\"\n            width: 50px; \n            height: 50px; \n            border-radius: 10px; \n            border: 2px solid #4285F4; \n            background-image: url(\u0027https://res.cloudinary.com/dmlxhooho/image/upload/v1754049862/ujjt3sth6bfwphpqpxbx.jpg\u0027); \n            background-size: cover; \n            background-position: center;\n            background-repeat: no-repeat;\n            box-shadow: 0 2px 8px rgba(0,0,0,0.3);\n            position: relative;\n        \"\u003e\n            \u003cdiv style=\"\n                position: absolute;\n                bottom: -2px;\n                right: -2px;\n                width: 16px;\n                height: 16px;\n                background: #4ECDC4;\n                border-radius: 50%;\n                border: 2px solid white;\n                display: flex;\n                align-items: center;\n                justify-content: center;\n                font-size: 10px;\n            \"\u003e\n                \ud83d\udc36\n            \u003c/div\u003e\n        \u003c/div\u003e\n        ",
   "iconSize": [50, 50],
   "iconAnchor": [25, 50],
@@ -176,30 +176,30 @@
 });
         
     
-        var popup_baca9dc1d331c188dedc78b08eb9c53c = L.popup({
+        var popup_b814fce1e0d3d0881a8702bb67da91fb = L.popup({
   "maxWidth": 350,
 });
 
         
             
-                var html_ff02eb65ec3f986a88bbdd22427b042e = $(`<div id="html_ff02eb65ec3f986a88bbdd22427b042e" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Haad Rin</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Adult 1 year+<br>             <b>😊 Temperament:</b> Can touch<br>             <b>📞 Contact:</b> Memo (619389061.0)<br>                          <div style='margin-top: 6px;'>                 <a href='https://res.cloudinary.com/dmlxhooho/image/upload/v1754049862/ujjt3sth6bfwphpqpxbx.jpg' target='_blank' style='display:inline-flex;align-items:center;background-color:#FF6B6B;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>                     📷 <span style='margin-left:2px;'>Photo</span>                 </a>             </div>                          <div style='margin-top: 8px;'>                 <a href="https://maps.app.goo.gl/Vm1jKKqozuFetpr5A" target="_blank" style='display:inline-flex;align-items:center;background-color:#4285F4;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>📍 <span style='margin-left:2px;'>Map</span></a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> the best girl of the haad rin             </div>         </div>         </div>`)[0];
-                popup_baca9dc1d331c188dedc78b08eb9c53c.setContent(html_ff02eb65ec3f986a88bbdd22427b042e);
+                var html_4a4b0270ac3f23cb98be25db4a576c3c = $(`<div id="html_4a4b0270ac3f23cb98be25db4a576c3c" style="width: 100.0%; height: 100.0%;">         <div style='font-family: Arial, sans-serif; max-width: 300px;'>                          <h4 style='margin:0 0 10px 0; color: #2E86AB;'>Haad Rin</h4>             <span style='background-color:red;color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>Spay/Neuter</span><br><br>                                       <b>🐾 Animal:</b> Dog<br>             <b>📊 Count:</b> 1<br>             <b>⚧ Sex:</b> Female<br>             <b>🎂 Age:</b> Adult 1 year+<br>             <b>😊 Temperament:</b> Can touch<br>             <b>📞 Contact:</b> Memo (619389061.0)<br>                          <div style='margin-top: 6px;'>                 <a href='https://res.cloudinary.com/dmlxhooho/image/upload/v1754049862/ujjt3sth6bfwphpqpxbx.jpg' target='_blank' style='display:inline-flex;align-items:center;background-color:#FF6B6B;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>                     📷 <span style='margin-left:2px;'>Photo</span>                 </a>             </div>                          <div style='margin-top: 8px;'>                 <a href="https://maps.app.goo.gl/Vm1jKKqozuFetpr5A" target="_blank" style='display:inline-flex;align-items:center;background-color:#4285F4;color:white;padding:3px 6px;text-decoration:none;border-radius:12px;font-size:9px;opacity:0.85;transition:opacity 0.2s;' onmouseover='this.style.opacity=1' onmouseout='this.style.opacity=0.85'>📍 <span style='margin-left:2px;'>Map</span></a>             </div>                          <div style='margin-top: 8px; font-size: 11px; color: #666;'>                 <b>Details:</b> the best girl of the haad rin             </div>         </div>         </div>`)[0];
+                popup_b814fce1e0d3d0881a8702bb67da91fb.setContent(html_4a4b0270ac3f23cb98be25db4a576c3c);
             
         
 
-        marker_eb012543683ead696542feb47b674d7e.bindPopup(popup_baca9dc1d331c188dedc78b08eb9c53c)
+        marker_5a91a6f759e9bfac55fa00b960f8d3ee.bindPopup(popup_b814fce1e0d3d0881a8702bb67da91fb)
         ;
 
         
     
     
-                marker_eb012543683ead696542feb47b674d7e.setIcon(div_icon_8a15320cf521bac7269a15ddd90f8809);
+                marker_5a91a6f759e9bfac55fa00b960f8d3ee.setIcon(div_icon_41a5ab388a490088c0f6c00102243ac5);
             
     
-            marker_cluster_0b5b06c6ac276ba8b385f6eb07e62d5e.addTo(map_a42065e0063173bb755846e45df4a744);
+            marker_cluster_4f0f764430b6d052259c53e367f69822.addTo(map_fd428f70f089532769840853bb5ff572);
         
     
-            map_a42065e0063173bb755846e45df4a744.fitBounds(
+            map_fd428f70f089532769840853bb5ff572.fitBounds(
                 [[9.6750296, 100.0633279], [9.6750296, 100.0633279]],
                 {"padding": [20, 20]}
             );
