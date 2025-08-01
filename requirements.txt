@@ -2,3 +2,4 @@ pandas
 folium
 requests
 branca
+python-dotenv

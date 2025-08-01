@@ -150,13 +150,37 @@ make setup-dev
 
 ### Configuration
 
+All service IDs and settings are centralized in one place for easy management:
+
 ```bash
 # Copy environment template
 cp .env.example .env
 
-# Edit .env with your Google Sheets ID
+# Edit .env with your actual service IDs
 nano .env
 ```
+
+#### 📋 Required Configuration
+
+**Google Sheets** (from your form responses sheet):
+- `GOOGLE_SHEET_ID`: Document ID from URL
+- `GOOGLE_SHEET_GID`: Sheet tab ID (gid parameter)  
+- `GOOGLE_SHEET_PUBLISHED_ID`: Published CSV ID (starts with 2PACX)
+
+**Cloudinary** (for photo uploads):
+- `CLOUDINARY_CLOUD_NAME`: Your cloud name
+- `CLOUDINARY_UPLOAD_PRESET`: Upload preset name
+
+**Map Settings**:
+- `MAP_CENTER_LAT/LNG`: Default map center coordinates
+- `MAP_ZOOM`: Default zoom level
+
+> **🔄 Easy Switching**: Change any service (form, sheet, Cloudinary) by updating the `.env` file - no code changes needed!
+
+#### 🔒 **Security Note**
+- **`.env.example`** ✅ **Public** - Template with example values (safe to commit)
+- **`.env`** 🔒 **Private** - Your actual IDs (automatically gitignored)
+- **`config.py`** ✅ **Public** - Code structure (safe to commit)
 
 ### Basic Usage
 

@@ -26,7 +26,7 @@ class DataManager:
     def sync_from_google_sheets(self) -> Optional[pd.DataFrame]:
         """Download and process data from Google Sheets"""
         # Use published CSV URL for form responses spreadsheet (more reliable for GitHub Actions)
-        csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQLJp4fulYq6Y8pnvjOGllpGYA_I3ZMNeO-eHgAB94hl2TIPA_CmSzVafXcYklYidLWvLF2N9dObwYE/pub?gid=1857135137&single=true&output=csv"
+        csv_url = self.config.PUBLISHED_CSV_URL
         
         # Fallback to old method if published URL fails
         fallback_url = f"https://docs.google.com/spreadsheets/d/{self.config.GOOGLE_SHEET_ID}/export?format=csv&gid={self.config.GOOGLE_SHEET_GID}"
