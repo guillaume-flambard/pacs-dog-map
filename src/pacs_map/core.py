@@ -78,6 +78,9 @@ class PacsMapGenerator:
         # Add additional tile layers
         folium.TileLayer('CartoDB positron').add_to(m)
         
+        # Add no-cache headers and normalize zoom controls
+        self._add_no_cache_headers(m)
+        
         return m
     
     def _add_markers(self, m: folium.Map, df: pd.DataFrame):
@@ -369,3 +372,38 @@ class PacsMapGenerator:
         </script>
         '''
         m.get_root().html.add_child(folium.Element(stats_html))
+    
+    def _add_no_cache_headers(self, m: folium.Map):
+        """Add no-cache headers and normalize zoom behavior"""
+        no_cache_html = '''
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <style>
+            /* Normalize zoom behavior across browsers */
+            html, body {
+                touch-action: manipulation;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                zoom: 1.0;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            
+            /* Prevent zoom on double tap */
+            * {
+                touch-action: manipulation;
+            }
+            
+            /* Force consistent font rendering */
+            .leaflet-container {
+                font-size: 1rem !important;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        </style>
+        '''
+        m.get_root().header.add_child(folium.Element(no_cache_html))
