@@ -42,7 +42,15 @@ class PacsMapGenerator:
         m = self._create_base_map()
         
         # Add markers
-        self._add_markers(m, valid_data)
+        marker_cluster = self._add_markers(m, valid_data)
+        
+        # Auto-zoom to fit all markers
+        if len(valid_data) > 0:
+            # Get bounds of all markers
+            lats = valid_data['Latitude'].tolist()
+            lngs = valid_data['Longitude'].tolist()
+            bounds = [[min(lats), min(lngs)], [max(lats), max(lngs)]]
+            m.fit_bounds(bounds, padding=(20, 20))
         
         # Add UI elements
         self._add_legend(m)
@@ -97,6 +105,8 @@ class PacsMapGenerator:
             
             # Add marker to cluster
             marker.add_to(marker_cluster)
+        
+        return marker_cluster
     
     def _get_marker_color(self, row: pd.Series) -> str:
         """Determine marker color based on animal properties"""
@@ -137,9 +147,14 @@ class PacsMapGenerator:
         
         # Handle photos - Cloudinary URLs work directly, Google Drive needs conversion
         photo_html = ""
-        if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
-            photo_url = row['Photo']
-            photo_link = row.get('Photo_Link', '')  # Full resolution link if available
+        photo_url = row.get('Photo', '')
+        photo_link = row.get('Photo_Link', '')
+        
+        # Use Photo_Link if Photo is empty but Photo_Link has content
+        if (not photo_url or pd.isna(photo_url) or photo_url == '') and photo_link and not pd.isna(photo_link):
+            photo_url = photo_link
+        
+        if pd.notna(photo_url) and photo_url != '':
             
             # Check if it's a Cloudinary URL (works directly) or Google Drive (needs conversion)
             if 'cloudinary.com' in photo_url:
