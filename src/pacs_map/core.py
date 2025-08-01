@@ -135,20 +135,35 @@ class PacsMapGenerator:
             action_color = 'red' if 'spay' in row['Pop-Up Info'].lower() else 'blue'
             action_info = f"<span style='background-color:{action_color};color:white;padding:2px 6px;border-radius:3px;font-size:11px;margin-right:5px;'>{row['Pop-Up Info']}</span>"
         
-        # Handle photos - convert Google Drive URLs to direct image URLs
+        # Handle photos - Cloudinary URLs work directly, Google Drive needs conversion
         photo_html = ""
         if pd.notna(row.get('Photo', '')) and row['Photo'] != '':
-            photo_url = self._convert_google_drive_url(row['Photo'])
-            if photo_url:
-                # Add both direct image and fallback link
-                photo_html = f"""<br>
-                <img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;' 
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div style='display:none; padding:10px; background:#f0f0f0; border-radius:5px; text-align:center;'>
-                    <a href='{row['Photo']}' target='_blank' style='color:#4285F4; text-decoration:none;'>
-                        📷 View Photo (Click to open)
-                    </a>
-                </div><br>"""
+            photo_url = row['Photo']
+            photo_link = row.get('Photo_Link', '')  # Full resolution link if available
+            
+            # Check if it's a Cloudinary URL (works directly) or Google Drive (needs conversion)
+            if 'cloudinary.com' in photo_url:
+                # Cloudinary URLs work directly - no conversion needed
+                if photo_link:
+                    photo_html = f"""<br>
+                    <a href='{photo_link}' target='_blank'>
+                        <img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;cursor:pointer;' 
+                             title='Click to view full size'>
+                    </a><br>"""
+                else:
+                    photo_html = f"<br><img src='{photo_url}' style='max-width:200px;max-height:150px;border-radius:5px;'><br>"
+            else:
+                # Google Drive or other - use conversion with fallback
+                converted_url = self._convert_google_drive_url(photo_url)
+                if converted_url:
+                    photo_html = f"""<br>
+                    <img src='{converted_url}' style='max-width:200px;max-height:150px;border-radius:5px;' 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div style='display:none; padding:10px; background:#f0f0f0; border-radius:5px; text-align:center;'>
+                        <a href='{photo_url}' target='_blank' style='color:#4285F4; text-decoration:none;'>
+                            📷 View Photo (Click to open)
+                        </a>
+                    </div><br>"""
         
         # No status badge - not in original sheets
         

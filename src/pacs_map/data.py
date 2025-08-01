@@ -205,12 +205,27 @@ class DataManager:
         standard_df['Location Details '] = df.get('Describe the exact location', '')  # Note trailing space
         standard_df['Contact Name'] = df.get('Your name', '')
         standard_df['Contact Phone #'] = df.get('Your phone number', '')
-        standard_df['Photo'] = df.get('Upload photos of the animal(s)', '')
+        
+        # Handle photos - prioritize Cloudinary columns
+        if 'Preview' in df.columns:
+            standard_df['Photo'] = df.get('Preview', '')  # Direct Cloudinary preview URL
+        elif 'Your photo' in df.columns:
+            standard_df['Photo'] = df.get('Your photo', '')  # New photo column
+        elif 'Upload photos of the animal(s)' in df.columns:
+            standard_df['Photo'] = df.get('Upload photos of the animal(s)', '')  # Old Google Drive
+        else:
+            standard_df['Photo'] = ''
         
         # Add missing columns
         standard_df['Unshortened Link'] = ''
         standard_df['Latitude'] = ''
         standard_df['Longitude'] = ''
+        
+        # Add full Cloudinary link if available (use 'Your photo' as full resolution link)
+        if 'Your photo' in df.columns:
+            standard_df['Photo_Link'] = df.get('Your photo', '')  # Full Cloudinary URL
+        else:
+            standard_df['Photo_Link'] = ''
         
         print(f"✅ Converted {len(standard_df)} form responses to standard format")
         return standard_df

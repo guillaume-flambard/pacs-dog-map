@@ -1,4 +1,8 @@
-Language,Pop-Up Info,Dog/Cat,No. of Animals,Sex,Pregnant?,Age,Temperament,Location (Area),Location Link,Location Details ,Contact Name,Contact Phone #,Photo,Unshortened Link,Latitude,Longitude
-English,Ask for Info,Dog,4,Both,No,Puppy (>6mnth),Friendly,haad rin,https://maps.app.goo.gl/fSYQdxptX7GuxMhR6,friendly ressort,memo,33619389061,https://drive.google.com/open?id=1VLPLPhDsKJaRIMGSGSmncSrtptlFS-oP,,9.6750349,100.0607476
-English,Adoption,Cat,1,Female,Yes,Adult,Wild,Chaloklum,https://maps.app.goo.gl/htJDGAypecgamkQD9,beach and sometimes at seven eleven,Memo,33619389061,https://drive.google.com/open?id=1niPWYpiGruyAzw469xvgvpiDKRucX3fH,,9.7868693,99.9982233
-Thai (ไทย),Spay/Neuter,Dog,6,Male,No,Adult,Wild,Ban tai,https://maps.app.goo.gl/R6XXAw1cUgGh5Ba38,echo,Memo,0,,,9.7000746,100.0154597
+Language,Pop-Up Info,Dog/Cat,No. of Animals,Sex,Pregnant?,Age,Temperament,Location (Area),Location Link,Location Details ,Contact Name,Contact Phone #,Photo,Unshortened Link,Latitude,Longitude,Photo_Link
+English,Ask for Info,Dog,4.0,Both,No,Puppy (>6mnth),Friendly,haad rin,https://maps.app.goo.gl/fSYQdxptX7GuxMhR6,friendly ressort,memo,+33619389061,,,9.6750349,100.0607476,
+English,Adoption,Cat,1.0,Female,Yes,Adult,Wild,Chaloklum,https://maps.app.goo.gl/htJDGAypecgamkQD9,beach and sometimes at seven eleven,Memo,+33619389061,,,9.7868693,99.9982233,
+Thai (ไทย),Spay/Neuter,Dog,6.0,Female,No,Adult,Wild,Ban tai,https://maps.app.goo.gl/R6XXAw1cUgGh5Ba38,echo,Memo,000000,,,9.7000746,100.0154597,
+English,Spay/Neuter,Dog,3.0,Male,No,Teenager (6mnth - 1yr),Aggressive - shows signs of aggression,thong sala,,,tests,tes,,,,,
+English,Ask for Info,Dog,2.0,Male,No,Adult,Aggressive - shows signs of aggression,ban tai,https://maps.app.goo.gl/qsxUgBR4n4rdY6R96,,memo,0,,,9.7036799,99.9958413,
+English,Ask for Info,Cat,2.0,Both,Yes,Teenager (6mnth - 1yr),Friendly,Ban Tai,https://maps.app.goo.gl/qsxUgBR4n4rdY6R96,landmark,Memo,00000,,,9.7036799,99.9958413,
+English,Spay/Neuter,Dog,3.0,Both,No,Puppy (>6mnth),Friendly,Ban Tai,https://maps.app.goo.gl/qsxUgBR4n4rdY6R96,restaurant,Memo,33619389060,,,9.7036799,99.9958413,https://res.cloudinary.com/dmlxhooho/image/upload/v1754013344/jhnthkokmsorq069gsqn.jpg
